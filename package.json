@@ -1,0 +1,32 @@
+{
+  "name": "gtfs-io",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "Type definitions and IO operations for GTFS datasets",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "test": "npm run build && npx vitest run --config ./vitest.config.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ponlawat-w/gtfs-io.git"
+  },
+  "author": {
+    "name": "Ponlawat Weerapanpisit",
+    "email": "ponlawat_w@outlook.co.th"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ponlawat-w/gtfs-io/issues"
+  },
+  "homepage": "https://github.com/ponlawat-w/gtfs-io#readme",
+  "devDependencies": {
+    "@types/node": "^20.10.1",
+    "typescript": "^5.3.2",
+    "vitest": "^0.34.6"
+  },
+  "dependencies": {
+    "csv": "^6.3.5"
+  }
+}
