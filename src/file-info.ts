@@ -7,9 +7,39 @@ export type GTFSFileInfo = {
 };
 
 /**
- * GTFS Files Information
+ * GTFS file name
  */
-export const GTFS_FILES: Record<string, GTFSFileInfo> = {
+export type GTFSFileName = 'agency'
+  | 'stops'
+  | 'routes'
+  | 'trips'
+  | 'stop_times'
+  | 'calendar'
+  | 'calendar_dates'
+  | 'fare_attributes'
+  | 'fare_rules'
+  | 'timeframes'
+  | 'fare_media'
+  | 'fare_products'
+  | 'fare_leg_rules'
+  | 'fare_transfer_rules'
+  | 'areas'
+  | 'stop_areas'
+  | 'networks'
+  | 'route_networks'
+  | 'shapes'
+  | 'frequencies'
+  | 'transfers'
+  | 'pathways'
+  | 'levels'
+  | 'translations'
+  | 'feed_info'
+  | 'attributions';
+
+/**
+ * GTFS files information
+ */
+export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
   agency: {
     name: 'agency.txt',
     columns: {

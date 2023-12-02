@@ -1,12 +1,11 @@
 import { stringify, parse } from 'csv/sync';
 import { GTFSFileRecords, GTFSFileRow } from '../types';
 import { GTFSFileInfo } from '../file-info';
-import type { Options as CSVStringifyOptions } from 'csv-stringify';
 
 /**
  * File IO
  */
-export class GTFSFileIO {
+export default class GTFSFileIO {
   protected constructor() {}
 
   /**
@@ -62,7 +61,7 @@ export class GTFSFileIO {
    * @param lines Array of content lines
    * @returns Array of records
    */
-  public static readLinesArray<RowType extends GTFSFileRow>(file: GTFSFileInfo, lines: string[]): RowType[] {
+  public static readLines<RowType extends GTFSFileRow>(file: GTFSFileInfo, lines: string[]): RowType[] {
     return [...GTFSFileIO.read<RowType>(file, lines.values())];
   }
 
@@ -73,8 +72,8 @@ export class GTFSFileIO {
    * @param newLine Line separator (default: \n)
    * @returns Array of record
    */
-  public static readArray<RowType extends GTFSFileRow>(file: GTFSFileInfo, content: string, newLine = '\n'): RowType[] {
-    return GTFSFileIO.readLinesArray<RowType>(file, content.split(newLine));
+  public static readContent<RowType extends GTFSFileRow>(file: GTFSFileInfo, content: string, newLine = '\n'): RowType[] {
+    return GTFSFileIO.readLines<RowType>(file, content.split(newLine));
   }
 
   /**
@@ -84,7 +83,7 @@ export class GTFSFileIO {
    * @param newLine Line separator (default: \n)
    * @returns Lines array
    */
-  public static writeLinesArray<RowType extends GTFSFileRow>(file: GTFSFileInfo, records: RowType[], newLine = '\n'): string[] {
+  public static writeLines<RowType extends GTFSFileRow>(file: GTFSFileInfo, records: RowType[], newLine = '\n'): string[] {
     return [...GTFSFileIO.write(file, records.values(), newLine)];
   }
 
@@ -95,7 +94,7 @@ export class GTFSFileIO {
    * @param newLine Line separator (default: \n)
    * @returns File content
    */
-  public static writeArray<RowType extends GTFSFileRow>(file: GTFSFileInfo, records: RowType[], newLine = '\n'): string {
-    return GTFSFileIO.writeLinesArray(file, records, newLine).join('');
+  public static writeContent<RowType extends GTFSFileRow>(file: GTFSFileInfo, records: RowType[], newLine = '\n'): string {
+    return GTFSFileIO.writeLines(file, records, newLine).join('');
   }
 };

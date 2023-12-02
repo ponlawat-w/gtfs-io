@@ -1,4 +1,33 @@
-export { GTFSFileIO } from './io/file';
+export { default as GTFSFileIO } from './io/file';
+export {
+  GTFSFeedFileIO,
+  GTFSAgencyIO,
+  GTFSStopIO,
+  GTFSRouteIO,
+  GTFSTripIO,
+  GTFSStopTimeIO,
+  GTFSCalendarIO,
+  GTFSCalendarDateIO,
+  GTFSFareAttributeIO,
+  GTFSFareRuleIO,
+  GTFSTimeframeIO,
+  GTFSFareMediaIO,
+  GTFSFareProductIO,
+  GTFSFareLegRuleIO,
+  GTFSFareTransferRuleIO,
+  GTFSAreaIO,
+  GTFSStopAreaIO,
+  GTFSNetworkIO,
+  GTFSRouteNetworkIO,
+  GTFSShapeIO,
+  GTFSFrequencyIO,
+  GTFSTransferIO,
+  GTFSPathwayIO,
+  GTFSLevelIO,
+  GTFSTranslationIO,
+  GTFSFeedInfoIO,
+  GTFSAttributionIO
+} from './io/feed-file';
 
 export { GTFS_FILES } from './file-info';
 
