@@ -9,7 +9,7 @@ export type GTFSFileInfo = {
 /**
  * GTFS Files Information
  */
-export const GTFSFileInfos: Record<string, GTFSFileInfo> = {
+export const GTFS_FILES: Record<string, GTFSFileInfo> = {
   agency: {
     name: 'agency.txt',
     columns: {

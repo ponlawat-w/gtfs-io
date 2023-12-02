@@ -1,6 +1,6 @@
-export { default as GTFSFileIO } from './io/file';
+export { GTFSFileIO } from './io/file';
 
-export { GTFSFileInfos } from './file-info';
+export { GTFS_FILES } from './file-info';
 
 export { GTFSCalendarDateException } from './files/calendar-date';
 export { GTFSCalendarAvailability } from './files/calendar';

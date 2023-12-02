@@ -26,7 +26,7 @@ import type { GTFSTranslation } from './files/translation';
 import type { GTFSTrip } from './files/trip';
 
 /** A row record in a GTFS file */
-export type GTFSRow = GTFSAgency
+export type GTFSFileRow = GTFSAgency
   | GTFSStop
   | GTFSRoute
   | GTFSTrip
@@ -54,7 +54,7 @@ export type GTFSRow = GTFSAgency
   | GTFSAttribution;
 
 /** GTFS file records */
-export type GTFSFileRecords<FileType extends GTFSRow> = IterableIterator<FileType>|FileType[];
+export type GTFSFileRecords<RowType extends GTFSFileRow = GTFSFileRow> = IterableIterator<RowType>|RowType[];
 
 /** GTFS Dataset feed */
 export type GTFSFeed = {
