@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsc",
-    "prepare-test": "curl -L -o ./temp/gtfs.zip https://storage.googleapis.com/storage/v1/b/mdb-latest/o/es-valenciana-generalitat-valenciana-gtfs-1870.zip?generation=1701303560208582&alt=media",
+    "pack": "npm run build && npx webpack",
     "test": "npm run build && npx vitest run --config ./vitest.config.ts"
   },
   "repository": {
@@ -25,8 +25,16 @@
   "devDependencies": {
     "@types/adm-zip": "^0.5.5",
     "@types/node": "^20.10.1",
+    "assert": "^2.1.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "stream-browserify": "^3.0.0",
     "typescript": "^5.3.2",
-    "vitest": "^0.34.6"
+    "util": "^0.12.5",
+    "vitest": "^0.34.6",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "adm-zip": "^0.5.10",

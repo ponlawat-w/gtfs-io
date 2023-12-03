@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GTFS</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <input id="file" type="file" multiple>
+    <button id="download" type="button">Download</button>
+    <textarea id="textarea" style="width: 100%; height: 75vh;" disabled></textarea>
+    <script src="../dist/bundle/index.js"></script>
+    <script lang="js">
+      const file = document.getElementById('file');
+
+      var FEED = undefined;
+
+      const display = () => {
+        if (!FEED) return;
+        document.getElementById('textarea').value = '';
+        for (const file of Object.keys(FEED)) {
+          FEED[file] = [...FEED[file]];
+          const length = FEED[file].length;
+          console.log(`${file}: ${length}`);
+          document.getElementById('textarea').value += `${file}: ${length}\n`;
+        }
+        document.getElementById('textarea').value += 'END\n';
+      };
+
+      const readZip = file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          FEED = GTFSIO.GTFSFeedReader.fromZip(e.target.result).getFeed();
+          display();
+        };
+        reader.readAsArrayBuffer(file);
+      };
+
+      const readFile = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          resolve(e.target.result);
+        };
+        reader.onerror = e => {
+          reject(e);
+        };
+        reader.readAsText(file);
+      });
+
+      const readFiles = async(files) => {
+        const fileContents = [];
+        for (const file of files) {
+          const content = await readFile(file);
+          fileContents.push({ name: file.name, content });
+        }
+        FEED = GTFSIO.GTFSFeedReader.fromFiles(fileContents).getFeed();
+        display();
+      };
+
+      file.onchange = e => {
+        const files = e.target.files;
+        const zips = [...files].filter(x => x.type === 'application/x-zip-compressed');
+        if (zips.length) {
+          readZip(zips[0]);
+          return;
+        }
+        const txts = [...files].filter(x => x.name.endsWith('.txt'));
+        readFiles(files);
+      };
+
+      document.getElementById('download').onclick = () => {
+        if (!FEED) return;
+        const zip = GTFSIO.GTFSFeedWriter.createZip(FEED);
+
+        const blob = new Blob([zip.toBuffer()], {
+          type: 'application/x-zip-compressed'
+        });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'gtfs.zip');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        a.remove();
+      };
+    </script>
+  </body>
+</html>
