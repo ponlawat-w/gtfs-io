@@ -62,8 +62,8 @@ export class GTFSFeedFileIO<RowType extends GTFSFileRow = GTFSFileRow> {
    * @param lines Iterable lines
    * @returns Iterable records
    */
-  public *read(lines: IterableIterator<string>): IterableIterator<RowType> {
-    yield *GTFSFileIO.read(this.fileInfo, lines);
+  public *readSync(lines: IterableIterator<string>): IterableIterator<RowType> {
+    yield *GTFSFileIO.readSync(this.fileInfo, lines);
     return;
   }
 
@@ -72,8 +72,8 @@ export class GTFSFeedFileIO<RowType extends GTFSFileRow = GTFSFileRow> {
    * @param lines Lines array
    * @returns Records array
    */
-  public readLines(lines: string[]): RowType[] {
-    return GTFSFileIO.readLines(this.fileInfo, lines);
+  public readLinesSync(lines: string[]): RowType[] {
+    return GTFSFileIO.readLinesSync(this.fileInfo, lines);
   }
 
   /**
@@ -81,8 +81,8 @@ export class GTFSFeedFileIO<RowType extends GTFSFileRow = GTFSFileRow> {
    * @param content File content
    * @returns Records array
    */
-  public readContent(content: string): RowType[] {
-    return GTFSFileIO.readContent(this.fileInfo, content);
+  public readContentSync(content: string): RowType[] {
+    return GTFSFileIO.readContentSync(this.fileInfo, content);
   }
 
   /**
@@ -90,8 +90,8 @@ export class GTFSFeedFileIO<RowType extends GTFSFileRow = GTFSFileRow> {
    * @param records Iterable records
    * @returns Iterable lines
    */
-  public *write(records: IterableIterator<RowType>): IterableIterator<string> {
-    yield *GTFSFileIO.write(this.fileInfo, records);
+  public *writeSync(records: IterableIterator<RowType>): IterableIterator<string> {
+    yield *GTFSFileIO.writeSync(this.fileInfo, records);
     return;
   }
 
@@ -100,8 +100,8 @@ export class GTFSFeedFileIO<RowType extends GTFSFileRow = GTFSFileRow> {
    * @param records Records array
    * @returns Lines array
    */
-  public writeLines(records: RowType[]): string[] {
-    return GTFSFileIO.writeLines(this.fileInfo, records);
+  public writeLinesSync(records: RowType[]): string[] {
+    return GTFSFileIO.writeLinesSync(this.fileInfo, records);
   }
 
   /**
@@ -109,8 +109,8 @@ export class GTFSFeedFileIO<RowType extends GTFSFileRow = GTFSFileRow> {
    * @param records Records array
    * @returns File content
    */
-  public writeContent(records: RowType[]): string {
-    return GTFSFileIO.writeContent(this.fileInfo, records);
+  public writeContentSync(records: RowType[]): string {
+    return GTFSFileIO.writeContentSync(this.fileInfo, records);
   }
 };
 

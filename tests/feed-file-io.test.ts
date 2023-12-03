@@ -35,11 +35,11 @@ test('Test agency.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.agency.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -50,11 +50,11 @@ test('Test stops.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.stops.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -65,11 +65,11 @@ test('Test routes.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.routes.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -80,11 +80,11 @@ test('Test trips.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.trips.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -95,11 +95,11 @@ test('Test stop_times.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.stop_times.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -110,11 +110,11 @@ test('Test calendar.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.calendar.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -125,11 +125,11 @@ test('Test calendar_dates.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.calendar_dates.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -140,11 +140,11 @@ test('Test fare_attributes.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.fare_attributes.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -155,11 +155,11 @@ test('Test fare_rules.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.fare_rules.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -170,11 +170,11 @@ test('Test timeframes.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.timeframes.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -185,11 +185,11 @@ test('Test fare_media.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.fare_media.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -200,11 +200,11 @@ test('Test fare_products.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.fare_products.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -215,11 +215,11 @@ test('Test fare_leg_rules.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.fare_leg_rules.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -230,11 +230,11 @@ test('Test fare_transfer_rules.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.fare_transfer_rules.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -245,11 +245,11 @@ test('Test areas.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.areas.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -260,11 +260,11 @@ test('Test stop_areas.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.stop_areas.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -275,11 +275,11 @@ test('Test networks.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.networks.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -290,11 +290,11 @@ test('Test route_networks.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.route_networks.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -305,11 +305,11 @@ test('Test shapes.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.shapes.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -320,11 +320,11 @@ test('Test frequencies.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.frequencies.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -335,11 +335,11 @@ test('Test transfers.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.transfers.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -350,11 +350,11 @@ test('Test pathways.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.pathways.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -365,11 +365,11 @@ test('Test levels.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.levels.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -380,11 +380,11 @@ test('Test translations.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.translations.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -395,11 +395,11 @@ test('Test feed_info.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.feed_info.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });
@@ -410,11 +410,11 @@ test('Test attributions.txt IO', () => {
   expect(io.columns).toEqual(Object.keys(GTFS_FILES.attributions.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContent(content);
+  const records = io.readContentSync(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
+  const lines = io.writeLinesSync(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 });

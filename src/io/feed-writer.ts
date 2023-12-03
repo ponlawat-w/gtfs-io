@@ -38,7 +38,7 @@ export default class GTFSFeedWriter {
     const files = getIterableFeedFiles(feed);
     for (const file of files) {
       const io = getIOFromFileName(file.info.name);
-      zip.addFile(io.fileName, Buffer.from([...io.write(file.records)].join('')));
+      zip.addFile(io.fileName, Buffer.from([...io.writeSync(file.records)].join('')));
     }
     return zip;
   }
@@ -55,7 +55,7 @@ export default class GTFSFeedWriter {
       const io = getIOFromFileName(file.info.name);
       fileContents.push({
         name: io.fileName,
-        content: [...io.write(file.records)].join('')
+        content: [...io.writeSync(file.records)].join('')
       });
     }
     return fileContents;
@@ -66,7 +66,7 @@ export default class GTFSFeedWriter {
    * @param feed GTFS Feed
    * @param path Path to output zip file
    */
-  public static writeZip(feed: GTFSFeed, path: string): void {
+  public static writeZipSync(feed: GTFSFeed, path: string): void {
     GTFSFeedWriter.createZip(feed).writeZip(path);
   }
 
@@ -77,7 +77,7 @@ export default class GTFSFeedWriter {
    * @param mkdirIfNotExists True to recursively create a directory at the path if does not exist
    * @returns File names without directory path, with .txt extension.
    */
-  public static writeDirectory(feed: GTFSFeed, path: string, mkdirIfNotExists: boolean = true): string[] {
+  public static writeDirectorySync(feed: GTFSFeed, path: string, mkdirIfNotExists: boolean = true): string[] {
     if (!existsSync(path) && mkdirIfNotExists) {
       mkdirSync(path, { recursive: true });
     }
@@ -89,7 +89,7 @@ export default class GTFSFeedWriter {
       const io = getIOFromFileName(file.info.name);
       const filePath = joinPath(path, io.fileName);
       writeFileSync(filePath, '');
-      for (const row of io.write(file.records)) {
+      for (const row of io.writeSync(file.records)) {
         chunks.push(row);
         if (chunks.length > bufferLineSize) {
           appendFileSync(filePath, chunks.join(''));

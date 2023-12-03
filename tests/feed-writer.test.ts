@@ -84,7 +84,7 @@ const getTestFeed = (): GTFSFeed => ({
 
 test('Test FeedWriter: zip', () => {
   const path = joinPath(OUTPUT_DIR, 'gtfs.zip');
-  GTFSFeedWriter.writeZip(getTestFeed(), path);
+  GTFSFeedWriter.writeZipSync(getTestFeed(), path);
 
   expect(existsSync(path)).toBeTruthy();
 
@@ -113,7 +113,7 @@ test('Test FeedWriter: dir', () => {
     }
   }
 
-  GTFSFeedWriter.writeDirectory(getTestFeed(), OUTPUT_DIR);
+  GTFSFeedWriter.writeDirectorySync(getTestFeed(), OUTPUT_DIR);
   const files = [
     'agency.txt', 'calendar_dates.txt', 'calendar.txt', 'routes.txt', 'shapes.txt', 'stop_times.txt', 'stops.txt', 'trips.txt'
   ];

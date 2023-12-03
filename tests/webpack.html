@@ -15,7 +15,6 @@
       var FEED = undefined;
 
       const display = () => {
-        if (!FEED) return;
         document.getElementById('textarea').value = '';
         for (const file of Object.keys(FEED)) {
           FEED[file] = [...FEED[file]];
@@ -29,7 +28,7 @@
       const readZip = file => {
         const reader = new FileReader();
         reader.onload = e => {
-          FEED = GTFSIO.GTFSFeedReader.fromZip(e.target.result).getFeed();
+          FEED = GTFSIO.GTFSFeedReader.fromZip(e.target.result).getFeedSync();
           display();
         };
         reader.readAsArrayBuffer(file);
@@ -52,7 +51,7 @@
           const content = await readFile(file);
           fileContents.push({ name: file.name, content });
         }
-        FEED = GTFSIO.GTFSFeedReader.fromFiles(fileContents).getFeed();
+        FEED = GTFSIO.GTFSFeedReader.fromFiles(fileContents).getFeedSync();
         display();
       };
 

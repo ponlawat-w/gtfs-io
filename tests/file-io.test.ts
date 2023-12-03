@@ -20,7 +20,7 @@ describe('Test GTFSFileIO reading', () => {
       + '"STOP_02",Test2,"1002",,50.25,-23.28,"0",STOP_01\n'
       + 'STOP_03,"NameWith,Comma",1003,,50.30,-23.30,0,\n'
       + 'STOP_04,Test4,1004,"Description with\nNew line",50.31,-23.48,0,\n';
-    const records = GTFSFileIO.readContent<GTFSStop>(GTFS_FILES.stops, content);
+    const records = GTFSFileIO.readContentSync<GTFSStop>(GTFS_FILES.stops, content);
     expect(records.length).toEqual(4);
     expect(records[0].stop_id).toEqual('STOP_01');
     expect(records[0].stop_code).toBeTypeOf('string');
@@ -48,10 +48,10 @@ describe('Test GTFSFileIO reading', () => {
 
   it('handles empty file content', () => {
     const content = 'stop_id,stop_name,stop_code,stop_desc,stop_lat,stop_lon,location_type,parent_station\n';
-    const records = GTFSFileIO.readContent<GTFSStop>(GTFS_FILES.stops, content);
+    const records = GTFSFileIO.readContentSync<GTFSStop>(GTFS_FILES.stops, content);
     expect(records.length).toEqual(0);
 
-    expect(GTFSFileIO.readContent<GTFSAgency>(GTFS_FILES.agency, '').length).toEqual(0);
+    expect(GTFSFileIO.readContentSync<GTFSAgency>(GTFS_FILES.agency, '').length).toEqual(0);
   });
 });
 
@@ -63,7 +63,7 @@ describe('Test GTFSFileIO writing', () => {
       { route_id: 'R03', service_id: 'S01', trip_id: 'T03', trip_headsign: 'with,comma' },
       { route_id: 'R02', service_id: 'S02', trip_id: 'T04', trip_headsign: 'with\nnewline' }
     ];
-    const content = GTFSFileIO.writeContent(GTFS_FILES.trips, records);
+    const content = GTFSFileIO.writeContentSync(GTFS_FILES.trips, records);
     expect(content).toEqual(
       'route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible,bikes_allowed\n'
       + 'R01,S01,T01,,,0,,,,\n'
@@ -76,7 +76,7 @@ describe('Test GTFSFileIO writing', () => {
 
   it('handles empty input', () => {
     const records: GTFSFileRecords<GTFSRoute> = [];
-    const content = GTFSFileIO.writeContent(GTFS_FILES.routes, records);
+    const content = GTFSFileIO.writeContentSync(GTFS_FILES.routes, records);
     expect(content).toEqual(
       'route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,'
       + 'route_text_color,route_sort_order,continuous_pickup,continuous_drop_off,network_id\n'
