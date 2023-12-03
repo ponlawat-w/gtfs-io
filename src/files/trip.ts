@@ -1,3 +1,5 @@
+import { GTFSWheelchairAccessbility } from './common';
+
 /** Indicates the direction of travel for a trip. */
 export enum GTFSTripDirection {
   /** Travel in one direction (e.g. outbound travel). */
@@ -6,18 +8,10 @@ export enum GTFSTripDirection {
   OppositeDirection = 1
 };
 
-/** Indicates wheelchair accessibility. */
-export enum GTFSTripWheelchairAccessbility {
-  /** No accessibility information for the trip. */
-  NoInformation = 0,
-  /** Vehicle being used on this particular trip can accommodate at least one rider in a wheelchair. */
-  Accessible = 1,
-  /** No riders in wheelchairs can be accommodated on this trip. */
-  Inaccessible = 2
-};
-
 /** Indicates whether bikes are allowed. */
 export enum GTFSTripBikesAllowed {
+  /** No bike information for the trip. */
+  Empty = '',
   /** No bike information for the trip. */
   NoInformation = 0,
   /** Vehicle being used on this particular trip can accommodate at least one bicycle. */
@@ -45,7 +39,7 @@ export type GTFSTrip = {
   /** Identifies a geospatial shape describing the vehicle travel path for a trip. */
   shape_id?: string,
   /** Indicates wheelchair accessibility. */
-  wheelchair_accessible?: GTFSTripWheelchairAccessbility|'',
+  wheelchair_accessible?: GTFSWheelchairAccessbility,
   /** Indicates whether bikes are allowed. */
-  bikes_allowed?: GTFSTripBikesAllowed|'',
+  bikes_allowed?: GTFSTripBikesAllowed,
 };

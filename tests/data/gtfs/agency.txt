@@ -1,0 +1,2 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone,agency_fare_url,agency_email
+A01,This Agency,https://test.agency,Europe/Madrid,en,+34000000000,https://test.agency/fare,contact@test.agency

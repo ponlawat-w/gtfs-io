@@ -1,6 +1,6 @@
 import { stringify, parse } from 'csv/sync';
-import { GTFSFileRecords, GTFSFileRow } from '../types';
-import { GTFSFileInfo } from '../file-info';
+import type { GTFSFileInfo } from '../file-info';
+import type { GTFSFileRecords, GTFSFileRow } from '../types';
 
 /**
  * File IO
@@ -28,8 +28,16 @@ export default class GTFSFileIO {
       let record: Record<string, any> = {};
 
       for (let i = 0; i < row.length; i++) {
-        const column = file.columns[columns[i]];
-        record[columns[i]] = column === 'string' ? row[i].toString() : parseInt(row[i]);
+        const columnType = file.columns[columns[i]];
+        if (columnType === 'int') {
+          record[columns[i]] = parseInt(row[i]);
+        } else if (columnType === 'float') {
+          record[columns[i]] = parseFloat(row[i]);
+        } else if (columnType === 'ioe') {
+          record[columns[i]] = row[i].trim() ? parseInt(row[i]) : '';
+        } else {
+          record[columns[i]] = row[i].toString();
+        }
       }
       yield record as RowType;
     }

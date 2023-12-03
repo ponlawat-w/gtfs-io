@@ -1,6 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { GTFSAgency, GTFSFileIO, GTFS_FILES, GTFSStopLocationType, GTFSTripDirection } from '../dist';
-import type { GTFSFileRecords, GTFSRoute, GTFSStop, GTFSTrip } from '../dist';
+import {
+  GTFS_FILES,
+  GTFSFileIO,
+  GTFSStopLocationType,
+  GTFSTripDirection
+} from '../dist';
+import type {
+  GTFSFileRecords,
+  GTFSAgency,
+  GTFSRoute,
+  GTFSStop,
+  GTFSTrip
+} from '../dist';
 
 describe('Test GTFSFileIO reading', () => {
   it('reads rows into records', () => {

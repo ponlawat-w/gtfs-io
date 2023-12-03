@@ -1,39 +1,11 @@
 export { default as GTFSFileIO } from './io/file';
-export {
-  GTFSFeedFileIO,
-  GTFSAgencyIO,
-  GTFSStopIO,
-  GTFSRouteIO,
-  GTFSTripIO,
-  GTFSStopTimeIO,
-  GTFSCalendarIO,
-  GTFSCalendarDateIO,
-  GTFSFareAttributeIO,
-  GTFSFareRuleIO,
-  GTFSTimeframeIO,
-  GTFSFareMediaIO,
-  GTFSFareProductIO,
-  GTFSFareLegRuleIO,
-  GTFSFareTransferRuleIO,
-  GTFSAreaIO,
-  GTFSStopAreaIO,
-  GTFSNetworkIO,
-  GTFSRouteNetworkIO,
-  GTFSShapeIO,
-  GTFSFrequencyIO,
-  GTFSTransferIO,
-  GTFSPathwayIO,
-  GTFSLevelIO,
-  GTFSTranslationIO,
-  GTFSFeedInfoIO,
-  GTFSAttributionIO
-} from './io/feed-file';
-
-export { GTFS_FILES } from './file-info';
+export { default as GTFSFeedReader } from './io/feed-reader';
+export * from './io/feed-file';
+export * from './file-info';
 
 export { GTFSCalendarDateException } from './files/calendar-date';
 export { GTFSCalendarAvailability } from './files/calendar';
-export { GTFSContinuousPickupDropOff } from './files/common';
+export { GTFSContinuousPickupDropOff, GTFSWheelchairAccessbility } from './files/common';
 export { GTFSFareAttributePaymentMethod, GTFSFareAttributeTransfer } from './files/fare-attribute';
 export { GTFSFareMediaType } from './files/fare-media';
 export { GTFSFareTransferRuleDurationLimit, GTFSFareTransferRuleType } from './files/fare-transfer-rule';
@@ -43,10 +15,11 @@ export { GTFSRouteType } from './files/route';
 export { GTFSStopTimePickupDropOff, GTFSStopTimeTimepoint } from './files/stop-time';
 export { GTFSStopLocationType } from './files/stop';
 export { GTFSTranferType } from './files/transfer';
-export { GTFSTripDirection, GTFSTripWheelchairAccessbility, GTFSTripBikesAllowed } from './files/trip';
+export { GTFSTripDirection, GTFSTripBikesAllowed } from './files/trip';
 
 export type * from './file-info';
 export type * from './types';
+export type * from './io/feed-reader';
 
 export type * from './files/agency';
 export type * from './files/area';

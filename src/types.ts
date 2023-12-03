@@ -24,6 +24,7 @@ import type { GTFSTimeframe } from './files/timeframe';
 import type { GTFSTransfer } from './files/transfer';
 import type { GTFSTranslation } from './files/translation';
 import type { GTFSTrip } from './files/trip';
+import type { GTFSFileInfo } from './file-info';
 
 /** A row record in a GTFS file */
 export type GTFSFileRow = GTFSAgency
@@ -55,6 +56,15 @@ export type GTFSFileRow = GTFSAgency
 
 /** GTFS file records */
 export type GTFSFileRecords<RowType extends GTFSFileRow = GTFSFileRow> = IterableIterator<RowType>|RowType[];
+
+/** GTFS Iterable for an individual file */
+export type GTFSIterableFeedFile = {
+  info: GTFSFileInfo,
+  records: IterableIterator<GTFSFileRow>
+};
+
+/** GTFS Iterable feed files */
+export type GTFSIterableFeedFiles = IterableIterator<GTFSIterableFeedFile>;
 
 /** GTFS Dataset feed */
 export type GTFSFeed = {
@@ -107,7 +117,63 @@ export type GTFSFeed = {
   /** Translations of customer-facing dataset values. */
   translations?: GTFSFileRecords<GTFSTranslation>,
   /** Dataset metadata, including publisher, version, and expiration information. */
-  feed_infos?: GTFSFileRecords<GTFSFeedInfo>,
+  feed_info?: GTFSFileRecords<GTFSFeedInfo>,
   /** Dataset attributions. */
   attributions?: GTFSFileRecords<GTFSAttribution>
+};
+
+/** GTFS Dataset feed loaded to memory */
+export type GTFSLoadedFeed = {
+  /** Transit agencies with service represented in this dataset. */
+  agency: GTFSAgency[],
+  /** Stops where vehicles pick up or drop off riders. */
+  stops: GTFSStop[],
+  /** Transit routes. A route is a group of trips that are displayed to riders as a single service. */
+  routes: GTFSRoute[],
+  /** Trips for each route. */
+  trips: GTFSTrip[],
+  /** Times that a vehicle arrives at and departs from stops for each trip. */
+  stop_times: GTFSStopTime[],
+  /** Service dates specified using a weekly schedule with start and end dates. */
+  calendar?: GTFSCalendar[],
+  /** Exceptions for the services defined in the `calendar.txt`. */
+  calendar_dates?: GTFSCalendarDate[],
+  /** Fare information for a transit agency's routes. */
+  fare_attributes?: GTFSFareAttribute[],
+  /** Rules to apply fares for itineraries. */
+  fare_rules?: GTFSFareRule[],
+  /** Date and time periods to use in fare rules for fares that depend on date and time factors. */
+  timeframes?: GTFSTimeframe[],
+  /** To describe the fare media that can be employed to use fare products. */
+  fare_media?: GTFSFareMedia[],
+  /** To describe the different types of tickets or fares that can be purchased by riders. */
+  fare_products?: GTFSFareProduct[],
+  /** Fare rules for individual legs of travel. */
+  fare_leg_rules?: GTFSFareLegRule[],
+  /** Fare rules for transfers between legs of travel. */
+  fare_transfer_rules?: GTFSFareTransferRule[],
+  /** Area grouping of locations. */
+  areas?: GTFSArea[],
+  /** Rules to assign stops to areas. */
+  stop_areas?: GTFSStopArea[],
+  /** Network grouping of routes. */
+  networks?: GTFSNetwork[],
+  /** Rules to assign routes to networks. */
+  route_networks?: GTFSRouteNetwork[],
+  /** Rules for mapping vehicle travel paths, sometimes referred to as route alignments. */
+  shapes?: GTFSShape[],
+  /** Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. */
+  frequencies?: GTFSFrequency[],
+  /** Rules for making connections at transfer points between routes. */
+  transfers?: GTFSTransfer[],
+  /** Pathways linking together locations within stations. */
+  pathways?: GTFSPathway[],
+  /** Levels within stations. */
+  levels?: GTFSLevel[],
+  /** Translations of customer-facing dataset values. */
+  translations?: GTFSTranslation[],
+  /** Dataset metadata, including publisher, version, and expiration information. */
+  feed_info?: GTFSFeedInfo[],
+  /** Dataset attributions. */
+  attributions?: GTFSAttribution[]
 };

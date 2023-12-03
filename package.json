@@ -6,6 +6,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsc",
+    "prepare-test": "curl -L -o ./temp/gtfs.zip https://storage.googleapis.com/storage/v1/b/mdb-latest/o/es-valenciana-generalitat-valenciana-gtfs-1870.zip?generation=1701303560208582&alt=media",
     "test": "npm run build && npx vitest run --config ./vitest.config.ts"
   },
   "repository": {
@@ -22,11 +23,13 @@
   },
   "homepage": "https://github.com/ponlawat-w/gtfs-io#readme",
   "devDependencies": {
+    "@types/adm-zip": "^0.5.5",
     "@types/node": "^20.10.1",
     "typescript": "^5.3.2",
     "vitest": "^0.34.6"
   },
   "dependencies": {
+    "adm-zip": "^0.5.10",
     "csv": "^6.3.5"
   }
 }
