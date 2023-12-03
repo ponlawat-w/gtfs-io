@@ -8,7 +8,7 @@ import { join as joinPath } from 'path';
 import { getIOFromFileName } from './feed-file';
 import { getGTFSFileInfos } from '../file-info';
 import type { GTFSFileInfo, GTFSFileName } from '../file-info';
-import type { GTFSFeed, GTFSFileRecords, GTFSFileRow, GTFSIterableFeedFiles, GTFSLoadedFeed } from '../types';
+import type { GTFSFeed, GTFSFileContent, GTFSFileRecords, GTFSFileRow, GTFSIterableFeedFiles, GTFSLoadedFeed } from '../types';
 
 /**
  * GTFS file object to read
@@ -20,14 +20,6 @@ type GTFSFile = {
   path?: string,
   /** File content buffer */
   buffer?: Buffer
-};
-
-/** GTFS feed file content */
-export type GTFSFileContent = {
-  /** File name with .txt */
-  name: string,
-  /** File content */
-  content: string|Buffer
 };
 
 /**
@@ -60,13 +52,13 @@ function *readZip(zipEntry: AdmZip.IZipEntry): IterableIterator<string> {
 }
 
 /**
- * GTFS feed writer.
+ * GTFS feed reader.
  * Do not use constructor, instead, use the following static methods to initiate an instance:
- * GTFSFeedWriter.fromZip,
- * GTFSFeedWriter.fromDir,
- * GTFSFeedWriter.fromFiles
+ * GTFSFeedReader.fromZip,
+ * GTFSFeedReader.fromDir,
+ * GTFSFeedReader.fromFiles
  */
-export default class GTFSFeedWriter {
+export default class GTFSFeedReader {
   /** Zip object */
   private zip?: AdmZip = undefined;
 
@@ -175,8 +167,8 @@ export default class GTFSFeedWriter {
    * @param zip Zip file path or content buffer
    * @returns GTFSFeedWriter instance
    */
-  public static fromZip(zip: string|Buffer): GTFSFeedWriter {
-    return new GTFSFeedWriter(zip);
+  public static fromZip(zip: string|Buffer): GTFSFeedReader {
+    return new GTFSFeedReader(zip);
   }
 
   /**
@@ -184,8 +176,8 @@ export default class GTFSFeedWriter {
    * @param dirPath Path to GTFS feed directory
    * @returns GTFSFeedWriter instance
    */
-  public static fromDir(dirPath: string): GTFSFeedWriter {
-    return new GTFSFeedWriter(undefined, dirPath);
+  public static fromDir(dirPath: string): GTFSFeedReader {
+    return new GTFSFeedReader(undefined, dirPath);
   }
 
   /**
@@ -193,7 +185,7 @@ export default class GTFSFeedWriter {
    * @param files Feed files object
    * @returns GTFSFeedWriter instance
    */
-  public static fromFiles(files: GTFSFileContent[]): GTFSFeedWriter {
-    return new GTFSFeedWriter(undefined, undefined, files);
+  public static fromFiles(files: GTFSFileContent[]): GTFSFeedReader {
+    return new GTFSFeedReader(undefined, undefined, files);
   }
 };

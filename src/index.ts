@@ -1,5 +1,6 @@
 export { default as GTFSFileIO } from './io/file';
 export { default as GTFSFeedReader } from './io/feed-reader';
+export { default as GTFSFeedWriter, getIterableFeedFiles } from './io/feed-writer';
 export * from './io/feed-file';
 export * from './file-info';
 
@@ -19,7 +20,6 @@ export { GTFSTripDirection, GTFSTripBikesAllowed } from './files/trip';
 
 export type * from './file-info';
 export type * from './types';
-export type * from './io/feed-reader';
 
 export type * from './files/agency';
 export type * from './files/area';

@@ -66,6 +66,14 @@ export type GTFSIterableFeedFile = {
 /** GTFS Iterable feed files */
 export type GTFSIterableFeedFiles = IterableIterator<GTFSIterableFeedFile>;
 
+/** GTFS feed file content */
+export type GTFSFileContent = {
+  /** File name with .txt */
+  name: string,
+  /** File content */
+  content: string|Buffer
+};
+
 /** GTFS Dataset feed */
 export type GTFSFeed = {
   /** Transit agencies with service represented in this dataset. */
