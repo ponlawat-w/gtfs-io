@@ -17,9 +17,11 @@ describe('Test GTFSFileIO reading', () => {
   it('reads rows into records', () => {
     const content = 'stop_id,stop_name,stop_code,stop_desc,stop_lat,stop_lon,location_type,parent_station\n'
       + 'STOP_01,"Test",1001,,50.25,-23.28,1,\n'
-      + '"STOP_02",Test2,"1002",,50.25,-23.28,"0",STOP_01\n';
+      + '"STOP_02",Test2,"1002",,50.25,-23.28,"0",STOP_01\n'
+      + 'STOP_03,"NameWith,Comma",1003,,50.30,-23.30,0,\n'
+      + 'STOP_04,Test4,1004,"Description with\nNew line",50.31,-23.48,0,\n';
     const records = GTFSFileIO.readContent<GTFSStop>(GTFS_FILES.stops, content);
-    expect(records.length).toEqual(2);
+    expect(records.length).toEqual(4);
     expect(records[0].stop_id).toEqual('STOP_01');
     expect(records[0].stop_code).toBeTypeOf('string');
     expect(records[0].stop_code).toEqual('1001');
@@ -36,6 +38,12 @@ describe('Test GTFSFileIO reading', () => {
     expect(records[1].location_type).toEqual(0);
     expect(records[1].location_type).toEqual(GTFSStopLocationType.Stop);
     expect(records[1].parent_station).toEqual('STOP_01');
+    expect(records[2].stop_name).toEqual('NameWith,Comma');
+    expect(records[2].stop_code).toEqual('1003');
+    expect(records[3].stop_id).toEqual('STOP_04');
+    expect(records[3].stop_desc).toEqual('Description with\nNew line');
+    expect(records[3].stop_lat).toEqual(50.31);
+    expect(records[3].stop_lon).toEqual(-23.48);
   });
 
   it('handles empty file content', () => {
@@ -51,13 +59,18 @@ describe('Test GTFSFileIO writing', () => {
   it('writes records into rows', () => {
     const records: GTFSFileRecords<GTFSTrip> = [
       { route_id: 'R01', service_id: 'S01', trip_id: 'T01', direction_id: GTFSTripDirection.OneDirection },
-      { route_id: 'R01', service_id: 'S02', trip_id: 'T02', trip_headsign: 'HEADSIGN' }
+      { route_id: 'R01', service_id: 'S02', trip_id: 'T02', trip_headsign: 'HEADSIGN' },
+      { route_id: 'R03', service_id: 'S01', trip_id: 'T03', trip_headsign: 'with,comma' },
+      { route_id: 'R02', service_id: 'S02', trip_id: 'T04', trip_headsign: 'with\nnewline' }
     ];
     const content = GTFSFileIO.writeContent(GTFS_FILES.trips, records);
     expect(content).toEqual(
       'route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible,bikes_allowed\n'
       + 'R01,S01,T01,,,0,,,,\n'
       + 'R01,S02,T02,HEADSIGN,,,,,,\n'
+      + 'R03,S01,T03,"with,comma",,,,,,\n'
+      + 'R02,S02,T04,"with\n'
+      + 'newline",,,,,,\n'
     );
   });
 

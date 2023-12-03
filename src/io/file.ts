@@ -22,11 +22,24 @@ export default class GTFSFileIO {
       .map(c => c.trim())
       .filter(c => file.columns[c]);
 
+    let lineContent = '';
     for (const line of lines) {
-      if (!line.trim()) continue;
-      let row = (parse(line) as string[][])[0].slice(0, columns.length);
-      let record: Record<string, any> = {};
+      lineContent += line;
+      if (!lineContent.trim()) continue;
 
+      let row: string[];
+      try {
+        row = (parse(lineContent) as string[][])[0].slice(0, columns.length);
+        lineContent = '';
+      } catch (ex: any) {
+        if (ex && ex.code && ex.code === 'CSV_QUOTE_NOT_CLOSED') {
+          lineContent += '\n';
+          continue;
+        }
+        throw ex;
+      }
+
+      let record: Record<string, any> = {};
       for (let i = 0; i < row.length; i++) {
         const columnType = file.columns[columns[i]];
         if (columnType === 'int') {
