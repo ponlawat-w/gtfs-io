@@ -59,21 +59,12 @@ export class GTFSFeedFileIO<RowType extends GTFSFileRow = GTFSFileRow> {
 
   /**
    * Read lines into records.
-   * @param lines Iterable lines
+   * @param chunks Iterable file content chunks
    * @returns Iterable records
    */
-  public *readSync(lines: IterableIterator<string>): IterableIterator<RowType> {
-    yield *GTFSFileIO.readSync(this.fileInfo, lines);
+  public *readSync(chunks: IterableIterator<string>): IterableIterator<RowType> {
+    yield *GTFSFileIO.readSync(this.fileInfo, chunks);
     return;
-  }
-
-  /**
-   * Read line strings array into records array.
-   * @param lines Lines array
-   * @returns Records array
-   */
-  public readLinesSync(lines: string[]): RowType[] {
-    return GTFSFileIO.readLinesSync(this.fileInfo, lines);
   }
 
   /**

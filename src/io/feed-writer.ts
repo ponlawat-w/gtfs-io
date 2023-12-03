@@ -6,27 +6,27 @@ import { GTFSFileName, GTFS_FILES } from '../file-info';
 import type { GTFSFeed, GTFSFileContent, GTFSFileRecords, GTFSIterableFeedFiles } from '../types';
 
 /**
- * Generator of feed by file.
- * @param feed GTFS Feed
- * @returns Iterable feed files
- */
-export function *getIterableFeedFiles(feed: GTFSFeed): GTFSIterableFeedFiles {
-  const keys = Object.keys(feed) as GTFSFileName[];
-  for (const key of keys) {
-    const info = GTFS_FILES[key];
-    if (!info) continue;
-    const records = feed[key] as GTFSFileRecords;
-    yield { info, records: Array.isArray(records) ? records.values() : records };
-  }
-  return;
-}
-
-/**
  * GTFS feed writer.
  * For static usage only.
  */
 export default class GTFSFeedWriter {
   private constructor() {}
+
+  /**
+   * Generator of feed by file.
+   * @param feed GTFS Feed
+   * @returns Iterable feed files
+   */
+  private static *getIterableFilesSync(feed: GTFSFeed): GTFSIterableFeedFiles {
+    const keys = Object.keys(feed) as GTFSFileName[];
+    for (const key of keys) {
+      const info = GTFS_FILES[key];
+      if (!info) continue;
+      const records = feed[key] as GTFSFileRecords;
+      yield { info, records: Array.isArray(records) ? records.values() : records };
+    }
+    return;
+  }
 
   /**
    * Create a zip instance in memory.
@@ -35,7 +35,7 @@ export default class GTFSFeedWriter {
    */
   public static createZip(feed: GTFSFeed): AdmZip {
     const zip = new AdmZip();
-    const files = getIterableFeedFiles(feed);
+    const files = GTFSFeedWriter.getIterableFilesSync(feed);
     for (const file of files) {
       const io = getIOFromFileName(file.info.name);
       zip.addFile(io.fileName, Buffer.from([...io.writeSync(file.records)].join('')));
@@ -50,7 +50,7 @@ export default class GTFSFeedWriter {
    */
   public static createFileContents(feed: GTFSFeed): GTFSFileContent[] {
     const fileContents: GTFSFileContent[] = [];
-    const files = getIterableFeedFiles(feed);
+    const files = GTFSFeedWriter.getIterableFilesSync(feed);
     for (const file of files) {
       const io = getIOFromFileName(file.info.name);
       fileContents.push({
@@ -81,7 +81,7 @@ export default class GTFSFeedWriter {
     if (!existsSync(path) && mkdirIfNotExists) {
       mkdirSync(path, { recursive: true });
     }
-    const files = getIterableFeedFiles(feed);
+    const files = GTFSFeedWriter.getIterableFilesSync(feed);
     const fileNames = [];
     const bufferLineSize = 64;
     for (const file of files) {

@@ -23,35 +23,6 @@ type GTFSFile = {
 };
 
 /**
- * Generator of iterable lines from a file path.
- * @param filePath File path
- * @returns Iterable file lines
- */
-function *readLine(filePath: string): IterableIterator<string> {
-  const file = openFile(filePath, 'r');
-  const bufferSize = 1024;
-  const buffer = Buffer.alloc(bufferSize);
-  let leftOver = '';
-  
-  let readPos;
-  while ((readPos = readFile(file, buffer, 0, bufferSize, null)) !== 0) {
-    const lines = (leftOver + buffer.toString('utf8', 0, readPos)).split(/\r?\n/g);
-    for (const line of lines.splice(0, lines.length - 1)) {
-      yield line;
-    }
-    leftOver = lines[0];
-  }
-  if (leftOver) yield leftOver;
-  return;
-}
-
-function *readZip(zipEntry: AdmZip.IZipEntry): IterableIterator<string> {
-  const lines = zipEntry.getData().toString().split(/\r?\n/g);
-  yield *lines;
-  return;
-}
-
-/**
  * GTFS feed reader.
  * Do not use constructor, instead, use the following static methods to initiate an instance:
  * GTFSFeedReader.fromZip,
@@ -64,6 +35,23 @@ export default class GTFSFeedReader {
 
   /** File objects */
   private files?: GTFSFile[] = undefined;
+
+  /**
+   * Generator of iterable chunks from a file path.
+   * @param filePath File path
+   * @returns Iterable file chunks
+   */
+  private static *readFileChunks(filePath: string): IterableIterator<string> {
+    const file = openFile(filePath, 'r');
+    const bufferSize = 1024;
+    const buffer = Buffer.alloc(bufferSize);
+    
+    let readPos;
+    while ((readPos = readFile(file, buffer, 0, bufferSize, null)) !== 0) {
+      yield buffer.toString('utf8', 0, readPos);
+    }
+    return;
+  }
 
   /**
    * Constructor, the object of this class is to be created by static methods.
@@ -110,16 +98,15 @@ export default class GTFSFeedReader {
         const entry = this.zip.getEntries().filter(entry => entry.entryName === info.name);
         if (!entry.length) continue;
         const fileIO = getIOFromFileName(info.name);
-        yield { info, records: fileIO.readSync(readZip(entry[0])) };
+        yield { info, records: fileIO.readSync([entry[0].getData().toString()].values()) };
       } else if (this.files) {
         const file = this.files.filter(f => f.info.name === info.name);
         if (!file.length) continue;
         const fileIO = getIOFromFileName(info.name);
         if (file[0].path) {
-          yield { info, records: fileIO.readSync(readLine(file[0].path)) };
+          yield { info, records: fileIO.readSync(GTFSFeedReader.readFileChunks(file[0].path)) };
         } else if (file[0].buffer) {
-          const lines = file[0].buffer.toString().replace(/\r\n/g, '\n').split('\n').values();
-          yield { info, records: fileIO.readSync(lines) };
+          yield { info, records: fileIO.readSync([file[0].buffer.toString()].values()) };
         }
       }
     }

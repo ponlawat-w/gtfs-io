@@ -46,6 +46,29 @@ describe('Test GTFSFileIO reading', () => {
     expect(records[3].stop_lon).toEqual(-23.48);
   });
 
+  it('reads chunks into records', () => {
+    const content = 'stop_id,stop_name,stop_code,stop_desc,stop_lat,stop_lon,location_type,parent_station\n'
+      + 'STOP_01,"Test",1001,,50.25,-23.28,1,\n'
+      + '"STOP_02",Test2,"1002",,50.25,-23.28,"0",STOP_01\n'
+      + 'STOP_03,"NameWith,Comma",1003,,50.30,-23.30,0,\n'
+      + 'STOP_04,Test4,1004,"Description with\nNew line",50.31,-23.48,0,\n';
+    const chunks = [
+      'stop_id,stop_name,stop_code,stop_desc,stop_lat,stop_', 'lon,location_type,parent_station\n',
+      'STOP_01,"Test",1001,,50.25,-23.28,1,\n"STOP_02",Test2,"1002",,50',
+      '.25,-23.28,"0",STOP_01\n',
+      'STOP_03,"NameWith,Comma",1003,,50.30,-23.30,0,\nSTOP_04,Test4',
+      ',1004,"Description with',
+      '\nNew line",50.31,-23.48,0,\n'
+    ];
+    const recordsFromContent = GTFSFileIO.readContentSync<GTFSStop>(GTFS_FILES.stops, content);
+    const recordsFromChunks = [...GTFSFileIO.readSync<GTFSStop>(GTFS_FILES.stops, chunks.values())];
+    expect(recordsFromChunks.length).toEqual(recordsFromContent.length);
+    expect(recordsFromChunks[0]).toEqual(recordsFromContent[0]);
+    expect(recordsFromChunks[1]).toEqual(recordsFromContent[1]);
+    expect(recordsFromChunks[2]).toEqual(recordsFromContent[2]);
+    expect(recordsFromChunks[3]).toEqual(recordsFromContent[3]);
+  });
+
   it('handles empty file content', () => {
     const content = 'stop_id,stop_name,stop_code,stop_desc,stop_lat,stop_lon,location_type,parent_station\n';
     const records = GTFSFileIO.readContentSync<GTFSStop>(GTFS_FILES.stops, content);
