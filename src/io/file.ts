@@ -2,13 +2,23 @@ import { stringify, parse } from 'csv/sync';
 import type { GTFSFileInfo } from '../file-info';
 import type { GTFSFileRecords, GTFSFileRow } from '../types';
 
+/**
+ * Parameter for GTFSFileIO.readChunk
+ */
 type ReadChunkObject<RowType extends GTFSFileRow = GTFSFileRow> = {
+  /** GTFS file information, to define once. */
   file: GTFSFileInfo,
+  /** Columns (table header), array if have been read, undefined if not yet. The method alters this property. */
   columns: string[]|undefined,
-  /** To redefine before reading chunk. */
+  /** Input, to redefine this property before calling GTFSFileIO.readChunk. */
   chunk: string,
-  /** For returning. */
+  /** Output, this will get set by the method. */
   records: RowType[],
+  /**
+   * Input, leave as is or set to undefine for the last iteration.
+   * It contains string (or empty string) when there is left over string from the previous iteration to prepend to the current chunk.
+   * It contains undefuned for the last iteration.
+   */
   leftOver: string|undefined
 };
 
@@ -18,6 +28,10 @@ type ReadChunkObject<RowType extends GTFSFileRow = GTFSFileRow> = {
 export default class GTFSFileIO {
   protected constructor() {}
 
+  /**
+   * Read chunk to records, this alter params object in the argument.
+   * @param params Chunk reading parameters
+   */
   private static readChunk<RowType extends GTFSFileRow = GTFSFileRow>(params: ReadChunkObject) {
     params.records = [];
 
@@ -83,7 +97,7 @@ export default class GTFSFileIO {
   }
 
   /**
-   * Read lines and returns records.
+   * Read chunks and returns records.
    * @param file File information
    * @param chunks Iterable file content chunks
    * @returns Iterable records
