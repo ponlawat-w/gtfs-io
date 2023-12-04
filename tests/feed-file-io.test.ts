@@ -37,11 +37,11 @@ const assert = (io: GTFSFeedFileIO, fileName: string, fileInfo: GTFSFileInfo) =>
   expect(io.columns).toEqual(Object.keys(fileInfo.columns));
 
   const content = io.columns.join(',') + '\n' + io.columns.map(_ => '').join(',');
-  const records = io.readContentSync(content);
+  const records = io.readContent(content);
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLinesSync(records);
+  const lines = io.writeLines(records);
   expect(lines.length).toEqual(2);
   expect(lines[0]).toEqual(io.columns.join(',') + '\n');
 }

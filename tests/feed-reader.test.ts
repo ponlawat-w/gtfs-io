@@ -144,20 +144,20 @@ const assert = (feed: GTFSLoadedFeed) => {
 
 test('Test FeedReader: zip path', () => {
   const reader = GTFSFeedReader.fromZip(ZIP_PATH);
-  const feed = reader.loadFeedSync();
+  const feed = reader.loadFeed();
   assert(feed);
 });
 
 test('Test FeedReader: zip content', () => {
   const zip = readFileSync(ZIP_PATH);
   const reader = GTFSFeedReader.fromZip(zip);
-  const feed = reader.loadFeedSync();
+  const feed = reader.loadFeed();
   assert(feed);
 });
 
 test('Test FeedReader: directory path', () => {
   const reader = GTFSFeedReader.fromDir(DIR_PATH);
-  const feed = reader.loadFeedSync();
+  const feed = reader.loadFeed();
   assert(feed);
 });
 
@@ -173,6 +173,6 @@ test('Test FeedReader: file contents', () => {
     { name: 'trips.txt', content: readFileSync(join(DIR_PATH, 'trips.txt')) }
   ];
   const reader = GTFSFeedReader.fromFiles(files);
-  const feed = reader.loadFeedSync();
+  const feed = reader.loadFeed();
   assert(feed);
 });

@@ -17,7 +17,7 @@ export default class GTFSFeedWriter {
    * @param feed GTFS Feed
    * @returns Iterable feed files
    */
-  private static *getIterableFilesSync(feed: GTFSFeed): GTFSIterableFeedFiles {
+  private static *getIterableFiles(feed: GTFSFeed): GTFSIterableFeedFiles {
     const keys = Object.keys(feed) as GTFSFileName[];
     for (const key of keys) {
       const info = GTFS_FILES[key];
@@ -35,10 +35,10 @@ export default class GTFSFeedWriter {
    */
   public static createZip(feed: GTFSFeed): AdmZip {
     const zip = new AdmZip();
-    const files = GTFSFeedWriter.getIterableFilesSync(feed);
+    const files = GTFSFeedWriter.getIterableFiles(feed);
     for (const file of files) {
       const io = getIOFromFileName(file.info.name);
-      zip.addFile(io.fileName, Buffer.from([...io.writeSync(file.records)].join('')));
+      zip.addFile(io.fileName, Buffer.from([...io.write(file.records)].join('')));
     }
     return zip;
   }
@@ -50,12 +50,12 @@ export default class GTFSFeedWriter {
    */
   public static createFileContents(feed: GTFSFeed): GTFSFileContent[] {
     const fileContents: GTFSFileContent[] = [];
-    const files = GTFSFeedWriter.getIterableFilesSync(feed);
+    const files = GTFSFeedWriter.getIterableFiles(feed);
     for (const file of files) {
       const io = getIOFromFileName(file.info.name);
       fileContents.push({
         name: io.fileName,
-        content: [...io.writeSync(file.records)].join('')
+        content: [...io.write(file.records)].join('')
       });
     }
     return fileContents;
@@ -66,7 +66,7 @@ export default class GTFSFeedWriter {
    * @param feed GTFS Feed
    * @param path Path to output zip file
    */
-  public static writeZipSync(feed: GTFSFeed, path: string): void {
+  public static writeZip(feed: GTFSFeed, path: string): void {
     GTFSFeedWriter.createZip(feed).writeZip(path);
   }
 
@@ -77,11 +77,11 @@ export default class GTFSFeedWriter {
    * @param mkdirIfNotExists True to recursively create a directory at the path if does not exist
    * @returns File names without directory path, with .txt extension.
    */
-  public static writeDirectorySync(feed: GTFSFeed, path: string, mkdirIfNotExists: boolean = true): string[] {
+  public static writeDirectory(feed: GTFSFeed, path: string, mkdirIfNotExists: boolean = true): string[] {
     if (!existsSync(path) && mkdirIfNotExists) {
       mkdirSync(path, { recursive: true });
     }
-    const files = GTFSFeedWriter.getIterableFilesSync(feed);
+    const files = GTFSFeedWriter.getIterableFiles(feed);
     const fileNames = [];
     const bufferLineSize = 64;
     for (const file of files) {
@@ -89,7 +89,7 @@ export default class GTFSFeedWriter {
       const io = getIOFromFileName(file.info.name);
       const filePath = joinPath(path, io.fileName);
       writeFileSync(filePath, '');
-      for (const row of io.writeSync(file.records)) {
+      for (const row of io.write(file.records)) {
         chunks.push(row);
         if (chunks.length > bufferLineSize) {
           appendFileSync(filePath, chunks.join(''));

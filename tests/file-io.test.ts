@@ -29,7 +29,7 @@ describe('Test GTFSFileIO reading', () => {
   ];
 
   it('reads rows into records', () => {
-    const records = GTFSFileIO.readContentSync<GTFSStop>(GTFS_FILES.stops, content);
+    const records = GTFSFileIO.readContent<GTFSStop>(GTFS_FILES.stops, content);
     expect(records.length).toEqual(4);
     expect(records[0].stop_id).toEqual('STOP_01');
     expect(records[0].stop_code).toBeTypeOf('string');
@@ -56,8 +56,8 @@ describe('Test GTFSFileIO reading', () => {
   });
 
   it('reads chunks into records', () => {
-    const recordsFromContent = GTFSFileIO.readContentSync<GTFSStop>(GTFS_FILES.stops, content);
-    const recordsFromChunks = [...GTFSFileIO.readSync<GTFSStop>(GTFS_FILES.stops, chunks.values())];
+    const recordsFromContent = GTFSFileIO.readContent<GTFSStop>(GTFS_FILES.stops, content);
+    const recordsFromChunks = [...GTFSFileIO.read<GTFSStop>(GTFS_FILES.stops, chunks.values())];
     expect(recordsFromChunks.length).toEqual(recordsFromContent.length);
     expect(recordsFromChunks[0]).toEqual(recordsFromContent[0]);
     expect(recordsFromChunks[1]).toEqual(recordsFromContent[1]);
@@ -67,10 +67,10 @@ describe('Test GTFSFileIO reading', () => {
 
   it('handles empty file content', () => {
     const content = 'stop_id,stop_name,stop_code,stop_desc,stop_lat,stop_lon,location_type,parent_station\n';
-    const records = GTFSFileIO.readContentSync<GTFSStop>(GTFS_FILES.stops, content);
+    const records = GTFSFileIO.readContent<GTFSStop>(GTFS_FILES.stops, content);
     expect(records.length).toEqual(0);
 
-    expect(GTFSFileIO.readContentSync<GTFSAgency>(GTFS_FILES.agency, '').length).toEqual(0);
+    expect(GTFSFileIO.readContent<GTFSAgency>(GTFS_FILES.agency, '').length).toEqual(0);
   });
 });
 
@@ -83,7 +83,7 @@ describe('Test GTFSFileIO writing', () => {
   ];
 
   it('writes records into rows', () => {
-    const content = GTFSFileIO.writeContentSync(GTFS_FILES.trips, records);
+    const content = GTFSFileIO.writeContent(GTFS_FILES.trips, records);
     expect(content).toEqual(
       'route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible,bikes_allowed\n'
       + 'R01,S01,T01,,,0,,,,\n'
@@ -96,7 +96,7 @@ describe('Test GTFSFileIO writing', () => {
 
   it('handles empty input', () => {
     const records: GTFSFileRecords<GTFSRoute> = [];
-    const content = GTFSFileIO.writeContentSync(GTFS_FILES.routes, records);
+    const content = GTFSFileIO.writeContent(GTFS_FILES.routes, records);
     expect(content).toEqual(
       'route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,'
       + 'route_text_color,route_sort_order,continuous_pickup,continuous_drop_off,network_id\n'

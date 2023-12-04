@@ -92,21 +92,21 @@ export default class GTFSFeedReader {
    * Get files existing in the feed and return their iterables (without reading them yet, depending on the initialisation).
    * @returns Iterable feed files
    */
-  public *getIterableFilesSync(): GTFSIterableFeedFiles {
+  public *getIterableFiles(): GTFSIterableFeedFiles {
     for (const info of getGTFSFileInfos()) {
       if (this.zip) {
         const entry = this.zip.getEntries().filter(entry => entry.entryName === info.name);
         if (!entry.length) continue;
         const fileIO = getIOFromFileName(info.name);
-        yield { info, records: fileIO.readSync([entry[0].getData().toString()].values()) };
+        yield { info, records: fileIO.read([entry[0].getData().toString()].values()) };
       } else if (this.files) {
         const file = this.files.filter(f => f.info.name === info.name);
         if (!file.length) continue;
         const fileIO = getIOFromFileName(info.name);
         if (file[0].path) {
-          yield { info, records: fileIO.readSync(GTFSFeedReader.readFileChunks(file[0].path)) };
+          yield { info, records: fileIO.read(GTFSFeedReader.readFileChunks(file[0].path)) };
         } else if (file[0].buffer) {
-          yield { info, records: fileIO.readSync([file[0].buffer.toString()].values()) };
+          yield { info, records: fileIO.read([file[0].buffer.toString()].values()) };
         }
       }
     }
@@ -117,7 +117,7 @@ export default class GTFSFeedReader {
    * Get feed object with row being file name without .txt and value being iterable records.
    * @returns Feed object with row being file name without .txt and value being iterable records.
    */
-  public getFeedSync(): GTFSFeed {
+  public getFeed(): GTFSFeed {
     const results: Partial<Record<GTFSFileName, GTFSFileRecords>> = {
       agency: [],
       stops: [],
@@ -126,7 +126,7 @@ export default class GTFSFeedReader {
       stop_times: []
     };
 
-    for (const file of this.getIterableFilesSync()) {
+    for (const file of this.getIterableFiles()) {
       const key = file.info.name.slice(0, file.info.name.length - 4) as GTFSFileName;
       results[key] = file.records;
     }
@@ -138,8 +138,8 @@ export default class GTFSFeedReader {
    * Get feed object with row being file name without .txt and value being array of records.
    * @returns Feed object with row being file name without .txt and value being array of records.
    */
-  public loadFeedSync(): GTFSLoadedFeed {
-    const feed = this.getFeedSync();
+  public loadFeed(): GTFSLoadedFeed {
+    const feed = this.getFeed();
     const results: Partial<Record<string, GTFSFileRow[]>> = {};
 
     for (const key of Object.keys(feed) as GTFSFileName[]) {

@@ -102,7 +102,7 @@ export default class GTFSFileIO {
    * @param chunks Iterable file content chunks
    * @returns Iterable records
    */
-  public static *readSync<RowType extends GTFSFileRow = GTFSFileRow>(file: GTFSFileInfo, chunks: IterableIterator<string>): IterableIterator<RowType> {
+  public static *read<RowType extends GTFSFileRow = GTFSFileRow>(file: GTFSFileInfo, chunks: IterableIterator<string>): IterableIterator<RowType> {
     const params: ReadChunkObject<RowType> = {
       file,
       columns: undefined,
@@ -135,7 +135,7 @@ export default class GTFSFileIO {
    * @param newLine New line delimiter
    * @returns Iterable file contents by line
    */
-  public static *writeSync(file: GTFSFileInfo, records: GTFSFileRecords, newLine = '\n'): IterableIterator<string> {
+  public static *write(file: GTFSFileInfo, records: GTFSFileRecords, newLine = '\n'): IterableIterator<string> {
     const columns = Object.keys(file.columns);
     yield stringify([columns], { record_delimiter: newLine });
 
@@ -153,8 +153,8 @@ export default class GTFSFileIO {
    * @param newLine Line separator (default: \n)
    * @returns Array of record
    */
-  public static readContentSync<RowType extends GTFSFileRow>(file: GTFSFileInfo, content: string): RowType[] {
-    return [...GTFSFileIO.readSync<RowType>(file, [content].values())];
+  public static readContent<RowType extends GTFSFileRow>(file: GTFSFileInfo, content: string): RowType[] {
+    return [...GTFSFileIO.read<RowType>(file, [content].values())];
   }
 
   /**
@@ -164,8 +164,8 @@ export default class GTFSFileIO {
    * @param newLine Line separator (default: \n)
    * @returns Lines array
    */
-  public static writeLinesSync<RowType extends GTFSFileRow>(file: GTFSFileInfo, records: RowType[], newLine = '\n'): string[] {
-    return [...GTFSFileIO.writeSync(file, records.values(), newLine)];
+  public static writeLines<RowType extends GTFSFileRow>(file: GTFSFileInfo, records: RowType[], newLine = '\n'): string[] {
+    return [...GTFSFileIO.write(file, records.values(), newLine)];
   }
 
   /**
@@ -175,7 +175,7 @@ export default class GTFSFileIO {
    * @param newLine Line separator (default: \n)
    * @returns File content
    */
-  public static writeContentSync<RowType extends GTFSFileRow>(file: GTFSFileInfo, records: RowType[], newLine = '\n'): string {
-    return GTFSFileIO.writeLinesSync(file, records, newLine).join('');
+  public static writeContent<RowType extends GTFSFileRow>(file: GTFSFileInfo, records: RowType[], newLine = '\n'): string {
+    return GTFSFileIO.writeLines(file, records, newLine).join('');
   }
 };

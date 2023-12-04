@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import AdmZip from 'adm-zip';
-import { existsSync, readFileSync, readdirSync, rmSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'fs';
 import { join as joinPath } from 'path';
 import {
   GTFSContinuousPickupDropOff,
@@ -83,8 +83,12 @@ const getTestFeed = (): GTFSFeed => ({
 });
 
 test('Test FeedWriter: zip', () => {
-  const path = joinPath(OUTPUT_DIR, 'gtfs.zip');
-  GTFSFeedWriter.writeZipSync(getTestFeed(), path);
+  const dir = joinPath(OUTPUT_DIR, 'zip');
+  const path = joinPath(dir, 'gtfs.zip');
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
+  }
+  GTFSFeedWriter.writeZip(getTestFeed(), path);
 
   expect(existsSync(path)).toBeTruthy();
 
@@ -107,21 +111,22 @@ test('Test FeedWriter: zip', () => {
 });
 
 test('Test FeedWriter: dir', () => {
-  if (existsSync(OUTPUT_DIR)) {
-    for (const file of readdirSync(OUTPUT_DIR).filter(x => x.endsWith('.txt')).map(x => joinPath(OUTPUT_DIR, x))) {
+  const path = joinPath(OUTPUT_DIR, 'gtfs');
+  if (existsSync(path)) {
+    for (const file of readdirSync(path).filter(x => x.endsWith('.txt')).map(x => joinPath(path, x))) {
       rmSync(file);
     }
   }
 
-  GTFSFeedWriter.writeDirectorySync(getTestFeed(), OUTPUT_DIR);
+  GTFSFeedWriter.writeDirectory(getTestFeed(), path);
   const files = [
     'agency.txt', 'calendar_dates.txt', 'calendar.txt', 'routes.txt', 'shapes.txt', 'stop_times.txt', 'stops.txt', 'trips.txt'
   ];
 
-  expect(files.every(x => existsSync(joinPath(OUTPUT_DIR, x)))).toBeTruthy();
+  expect(files.every(x => existsSync(joinPath(path, x)))).toBeTruthy();
   for (const file of files) {
     expect(
-      readFileSync(joinPath(OUTPUT_DIR, file)).toString().split(/\r?\n/g),
+      readFileSync(joinPath(path, file)).toString().split(/\r?\n/g),
       file
     ).toEqual(
       readFileSync(joinPath(COMPARE_DIR, file)).toString().split(/\r?\n/g)
