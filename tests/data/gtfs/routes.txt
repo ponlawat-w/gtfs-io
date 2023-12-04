@@ -1,0 +1,3 @@
+route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color,route_sort_order,continuous_pickup,continuous_drop_off,network_id
+R01,A01,01,Route Number 1,,3,,ffffff,000000,1,,1,
+R02,A01,02,Route Number 2,,3,,000000,ffffff,2,1,1,

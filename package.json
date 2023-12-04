@@ -1,11 +1,12 @@
 {
   "name": "gtfs-io",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Type definitions and IO operations for GTFS datasets",
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsc",
+    "pack": "npm run build && npx webpack",
     "test": "npm run build && npx vitest run --config ./vitest.config.ts"
   },
   "repository": {
@@ -22,11 +23,22 @@
   },
   "homepage": "https://github.com/ponlawat-w/gtfs-io#readme",
   "devDependencies": {
+    "@types/adm-zip": "^0.5.5",
     "@types/node": "^20.10.1",
+    "assert": "^2.1.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "stream-browserify": "^3.0.0",
+    "typedoc": "^0.25.4",
     "typescript": "^5.3.2",
-    "vitest": "^0.34.6"
+    "util": "^0.12.5",
+    "vitest": "^0.34.6",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "adm-zip": "^0.5.10",
     "csv": "^6.3.5"
   }
 }

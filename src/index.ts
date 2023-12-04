@@ -1,10 +1,15 @@
-export { default as GTFSFileIO } from './io/file';
+export { GTFSFileIO, GTFSAsyncFileIO } from './io/file';
+export * from './io/feed-file';
+export { GTFSFeedReader, GTFSAsyncFeedReader } from './io/feed-reader';
+export { GTFSFeedWriter, GTFSAsyncFeedWriter } from './io/feed-writer';
 
-export { GTFSFileInfos } from './file-info';
+export * from './feed/iterable';
+export * from './feed/loaded';
+export * from './file-info';
 
 export { GTFSCalendarDateException } from './files/calendar-date';
 export { GTFSCalendarAvailability } from './files/calendar';
-export { GTFSContinuousPickupDropOff } from './files/common';
+export { GTFSContinuousPickupDropOff, GTFSWheelchairAccessbility } from './files/common';
 export { GTFSFareAttributePaymentMethod, GTFSFareAttributeTransfer } from './files/fare-attribute';
 export { GTFSFareMediaType } from './files/fare-media';
 export { GTFSFareTransferRuleDurationLimit, GTFSFareTransferRuleType } from './files/fare-transfer-rule';
@@ -14,10 +19,12 @@ export { GTFSRouteType } from './files/route';
 export { GTFSStopTimePickupDropOff, GTFSStopTimeTimepoint } from './files/stop-time';
 export { GTFSStopLocationType } from './files/stop';
 export { GTFSTranferType } from './files/transfer';
-export { GTFSTripDirection, GTFSTripWheelchairAccessbility, GTFSTripBikesAllowed } from './files/trip';
+export { GTFSTripDirection, GTFSTripBikesAllowed } from './files/trip';
 
 export type * from './file-info';
 export type * from './types';
+
+export type * from './io/types';
 
 export type * from './files/agency';
 export type * from './files/area';

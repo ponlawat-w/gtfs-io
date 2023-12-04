@@ -1,3 +1,5 @@
+import type { GTFSWheelchairAccessbility } from './common';
+
 /** Location Type */
 export enum GTFSStopLocationType {
   /** A location where passengers board or disembark from a transit vehicle. */
@@ -30,7 +32,7 @@ type StopBase<T extends GTFSStopLocationType> = {
   /** Timezone of the location. */
   stop_timezone?: string,
   /** Indicates whether wheelchair boardings are possible from the location. */
-  wheelchair_boarding?: string,
+  wheelchair_boarding?: GTFSWheelchairAccessbility,
   /** Level of the location. */
   level_id?: string,
   /** Platform identifier for a platform stop (a stop belonging to a station). */

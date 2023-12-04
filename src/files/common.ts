@@ -12,3 +12,15 @@ export enum GTFSContinuousPickupDropOff {
   /** Must coordinate with driver to arrange continuous stopping pickup / drop off. */
   Driver = 3
 };
+
+/** Indicates wheelchair accessibility. */
+export enum GTFSWheelchairAccessbility {
+  /** No accessibility information. */
+  Default = '',
+  /** No accessibility information. */
+  NoInformation = 0,
+  /** Accessible. */
+  Accessible = 1,
+  /** No accessible. */
+  Inaccessible = 2
+};
