@@ -3,24 +3,16 @@ import {
   existsSync as exists,
   openSync as openFile,
   read as readAsync,
-  readFile,
-  readFile as readFileAsync,
   readSync as readFileSync
 } from 'fs';
 import { join as joinPath } from 'path';
 import { getAsyncIOFromFileName, getIOFromFileName } from './feed-file';
 import { getGTFSFileInfos } from '../file-info';
-import type { GTFSFileInfo, GTFSTableName } from '../file-info';
-import type {
-  GTFSAsyncFileRecords,
-  GTFSFileContent,
-  GTFSFileRecords,
-  GTFSFileRow,
-  GTFSIterableFeedFiles,
-} from '../types';
 import { GTFSFeedBase } from '../feed/base';
 import { GTFSLoadedFeed } from '../feed/loaded';
 import { GTFSAsyncIterableFeed, GTFSIterableFeed } from '../feed/iterable';
+import type { GTFSFileInfo } from '../file-info';
+import type { GTFSAsyncFileRecords, GTFSFileContent, GTFSFileRecords } from '../types';
 
 /**
  * GTFS file object to read
@@ -97,6 +89,10 @@ abstract class FeedReader<RecordsType, FeedType extends GTFSFeedBase<RecordsType
    * @param content File content buffer
    */
   protected abstract getRecordsFromFileContent(info: GTFSFileInfo, content: Buffer): RecordsType;
+  /**
+   * Read all records and load into array in memory.
+   */
+  public abstract loadFeed(): GTFSLoadedFeed|Promise<GTFSLoadedFeed>;
 
   /**
    * From file information, get records.
@@ -221,6 +217,13 @@ export class GTFSFeedReader extends FeedReader<GTFSFileRecords, GTFSIterableFeed
   }
 };
 
+/**
+ * GTFS feed reader.
+ * Do not use constructor, instead, use the following static methods to initiate an instance:
+ * GTFSFeedReader.fromZip,
+ * GTFSFeedReader.fromDir,
+ * GTFSFeedReader.fromFiles
+ */
 export class GTFSAsyncFeedReader extends FeedReader<GTFSAsyncFileRecords, Promise<GTFSAsyncIterableFeed>> {
   /**
    * Generator of iterable chunks from a file path.

@@ -1,4 +1,5 @@
-import { GTFSTableName, GTFS_FILES } from '../file-info';
+import { GTFS_FILES } from '../file-info';
+import type { GTFSTableName } from '../file-info';
 import type { GTFSAgency } from '../files/agency';
 import type { GTFSArea } from '../files/area';
 import type { GTFSAttribution } from '../files/attribution';
@@ -27,83 +28,105 @@ import type { GTFSTranslation } from '../files/translation';
 import type { GTFSTrip } from '../files/trip';
 import type { GTFSAsyncFileRecords, GTFSFileRecords, GTFSFileRow, GTFSIterableFeedFiles } from '../types';
 
-type RecordsGenericType<R, T extends GTFSFileRow = GTFSFileRow> =
+/** Records Generic Type: R to be collection type, and T to be row type */
+type RT<R, T extends GTFSFileRow = GTFSFileRow> =
   R extends GTFSFileRow[] ? T[] :
   R extends GTFSFileRecords ? GTFSFileRecords<T> :
   R extends GTFSAsyncFileRecords ? GTFSAsyncFileRecords<T> : Iterable<T>;
 
-export class GTFSFeedBase<RecordsType> {
+/**
+ * Base Feed class
+ */
+export abstract class GTFSFeedBase<RecordsType> {
   /** Transit agencies with service represented in this dataset. */
-  public agency: RecordsGenericType<RecordsType, GTFSAgency>;
+  public agency: RT<RecordsType, GTFSAgency>;
   /** Stops where vehicles pick up or drop off riders. */
-  public stops: RecordsGenericType<RecordsType, GTFSStop>;
+  public stops: RT<RecordsType, GTFSStop>;
   /** Transit routes. A route is a group of trips that are displayed to riders as a single service. */
-  public routes: RecordsGenericType<RecordsType, GTFSRoute>;
+  public routes: RT<RecordsType, GTFSRoute>;
   /** Trips for each route. */
-  public trips: RecordsGenericType<RecordsType, GTFSTrip>;
+  public trips: RT<RecordsType, GTFSTrip>;
   /** Times that a vehicle arrives at and departs from stops for each trip. */
-  public stop_times: RecordsGenericType<RecordsType, GTFSStopTime>;
+  public stop_times: RT<RecordsType, GTFSStopTime>;
   /** Service dates specified using a weekly schedule with start and end dates. */
-  public calendar?: RecordsGenericType<RecordsType, GTFSCalendar>;
+  public calendar?: RT<RecordsType, GTFSCalendar>;
   /** Exceptions for the services defined in the `calendar.txt`. */
-  public calendar_dates?: RecordsGenericType<RecordsType, GTFSCalendarDate>;
+  public calendar_dates?: RT<RecordsType, GTFSCalendarDate>;
   /** Fare information for a transit agency's routes. */
-  public fare_attributes?: RecordsGenericType<RecordsType, GTFSFareAttribute>;
+  public fare_attributes?: RT<RecordsType, GTFSFareAttribute>;
   /** Rules to apply fares for itineraries. */
-  public fare_rules?: RecordsGenericType<RecordsType, GTFSFareRule>;
+  public fare_rules?: RT<RecordsType, GTFSFareRule>;
   /** Date and time periods to use in fare rules for fares that depend on date and time factors. */
-  public timeframes?: RecordsGenericType<RecordsType, GTFSTimeframe>;
+  public timeframes?: RT<RecordsType, GTFSTimeframe>;
   /** To describe the fare media that can be employed to use fare products. */
-  public fare_media?: RecordsGenericType<RecordsType, GTFSFareMedia>;
+  public fare_media?: RT<RecordsType, GTFSFareMedia>;
   /** To describe the different types of tickets or fares that can be purchased by riders. */
-  public fare_products?: RecordsGenericType<RecordsType, GTFSFareProduct>;
+  public fare_products?: RT<RecordsType, GTFSFareProduct>;
   /** Fare rules for individual legs of travel. */
-  public fare_leg_rules?: RecordsGenericType<RecordsType, GTFSFareLegRule>;
+  public fare_leg_rules?: RT<RecordsType, GTFSFareLegRule>;
   /** Fare rules for transfers between legs of travel. */
-  public fare_transfer_rules?: RecordsGenericType<RecordsType, GTFSFareTransferRule>;
+  public fare_transfer_rules?: RT<RecordsType, GTFSFareTransferRule>;
   /** Area grouping of locations. */
-  public areas?: RecordsGenericType<RecordsType, GTFSArea>;
+  public areas?: RT<RecordsType, GTFSArea>;
   /** Rules to assign stops to areas. */
-  public stop_areas?: RecordsGenericType<RecordsType, GTFSStopArea>;
+  public stop_areas?: RT<RecordsType, GTFSStopArea>;
   /** Network grouping of routes. */
-  public networks?: RecordsGenericType<RecordsType, GTFSNetwork>;
+  public networks?: RT<RecordsType, GTFSNetwork>;
   /** Rules to assign routes to networks. */
-  public route_networks?: RecordsGenericType<RecordsType, GTFSRouteNetwork>;
+  public route_networks?: RT<RecordsType, GTFSRouteNetwork>;
   /** Rules for mapping vehicle travel paths, sometimes referred to as route alignments. */
-  public shapes?: RecordsGenericType<RecordsType, GTFSShape>;
+  public shapes?: RT<RecordsType, GTFSShape>;
   /** Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. */
-  public frequencies?: RecordsGenericType<RecordsType, GTFSFrequency>;
+  public frequencies?: RT<RecordsType, GTFSFrequency>;
   /** Rules for making connections at transfer points between routes. */
-  public transfers?: RecordsGenericType<RecordsType, GTFSTransfer>;
+  public transfers?: RT<RecordsType, GTFSTransfer>;
   /** Pathways linking together locations within stations. */
-  public pathways?: RecordsGenericType<RecordsType, GTFSPathway>;
+  public pathways?: RT<RecordsType, GTFSPathway>;
   /** Levels within stations. */
-  public levels?: RecordsGenericType<RecordsType, GTFSLevel>;
+  public levels?: RT<RecordsType, GTFSLevel>;
   /** Translations of customer-facing dataset values. */
-  public translations?: RecordsGenericType<RecordsType, GTFSTranslation>;
+  public translations?: RT<RecordsType, GTFSTranslation>;
   /** Dataset metadata, including publisher, version, and expiration information. */
-  public feed_info?: RecordsGenericType<RecordsType, GTFSFeedInfo>;
+  public feed_info?: RT<RecordsType, GTFSFeedInfo>;
   /** Dataset attributions. */
-  public attributions?: RecordsGenericType<RecordsType, GTFSAttribution>;
+  public attributions?: RT<RecordsType, GTFSAttribution>;
 
-  protected constructor(defaultValues: Partial<Record<GTFSTableName, RecordsGenericType<RecordsType>>>, emptyValue: RecordsType) {
-    Object.assign(this, defaultValues);
-    this.agency = defaultValues.agency as RecordsGenericType<RecordsType, GTFSAgency> ?? emptyValue;
-    this.stops = defaultValues.stops as RecordsGenericType<RecordsType, GTFSStop> ?? emptyValue;
-    this.routes = defaultValues.routes as RecordsGenericType<RecordsType, GTFSRoute> ?? emptyValue;
-    this.trips = defaultValues.trips as RecordsGenericType<RecordsType, GTFSTrip> ?? emptyValue;
-    this.stop_times = defaultValues.stop_times as RecordsGenericType<RecordsType, GTFSStopTime> ?? emptyValue;
+  /**
+   * Constructor
+   * @param initialValues Initial values
+   * @param emptyValue Default empty values of RecordsType for required table but not defined in initialValues
+   */
+  protected constructor(initialValues: Partial<Record<GTFSTableName, RT<RecordsType>>>, emptyValue: () => RecordsType) {
+    Object.assign(this, initialValues);
+    this.agency = initialValues.agency as RT<RecordsType, GTFSAgency> ?? emptyValue;
+    this.stops = initialValues.stops as RT<RecordsType, GTFSStop> ?? emptyValue;
+    this.routes = initialValues.routes as RT<RecordsType, GTFSRoute> ?? emptyValue;
+    this.trips = initialValues.trips as RT<RecordsType, GTFSTrip> ?? emptyValue;
+    this.stop_times = initialValues.stop_times as RT<RecordsType, GTFSStopTime> ?? emptyValue;
   }
 
-  public setTable(name: GTFSTableName, value: RecordsGenericType<RecordsType>) {
-    Object.assign(this, { [name]: value });
+  /**
+   * Set table records.
+   * @param name Table name
+   * @param records Value
+   */
+  public setTable(name: GTFSTableName, records: RT<RecordsType>) {
+    Object.assign(this, { [name]: records });
   }
 
-  public getTable(name: GTFSTableName): RecordsGenericType<RecordsType>|undefined {
-    return this[name]! as RecordsGenericType<RecordsType>;
+  /**
+   * Get table records.
+   * @param name Table name
+   * @returns RecordsType
+   */
+  public getTable(name: GTFSTableName): RecordsType|undefined {
+    return this[name]! as RecordsType;
   }
 
-  public *getAllTables(): GTFSIterableFeedFiles<RecordsGenericType<RecordsType>> {
+  /**
+   * Get iterator for all existing tables.
+   */
+  public *getAllTables(): GTFSIterableFeedFiles<RT<RecordsType>> {
     if (this.agency !== undefined) yield { name: 'agency', info: GTFS_FILES.agency, records: this.agency };
     if (this.stops !== undefined) yield { name: 'stops', info: GTFS_FILES.stops, records: this.stops };
     if (this.routes !== undefined) yield { name: 'routes', info: GTFS_FILES.routes, records: this.routes };

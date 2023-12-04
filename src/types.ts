@@ -62,8 +62,11 @@ export type GTFSAsyncFileRecords<RowType extends GTFSFileRow = GTFSFileRow> = As
 
 /** GTFS iterable for an individual file */
 export type GTFSIterableFeedFile<RecordsType> = {
+  /** File name without .txt */
   name: GTFSTableName,
+  /** File information */
   info: GTFSFileInfo,
+  /** Records */
   records: RecordsType
 };
 

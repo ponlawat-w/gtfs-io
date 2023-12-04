@@ -1,9 +1,14 @@
 import { getInitialReadChunkParams, readChunk } from './reader';
+import { getInitialWriteChunkParams, getRecordsHeader, writeRecords } from './writer';
+import type { GTFSIOWriteOptions } from './types';
 import type { GTFSFileInfo } from '../file-info';
 import type { GTFSAsyncFileRecords, GTFSFileRecords, GTFSFileRow } from '../types';
-import { getInitialWriteChunkParams, getRecordsHeader, writeRecords } from './writer';
-import { GTFSIOWriteOptions } from './types';
 
+/**
+ * Create or modify given options object to define default values if not provided.
+ * @param options Options object
+ * @returns Normalised writer options
+ */
 function normaliseWriteOptions(options?: GTFSIOWriteOptions): GTFSIOWriteOptions {
   if (!options) options = {};
   options.newline = options.newline ?? '\n';

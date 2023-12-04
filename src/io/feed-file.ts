@@ -30,6 +30,9 @@ import type { GTFSFeedInfo } from '../files/feed-info';
 import type { GTFSAttribution } from '../files/attribution';
 import { GTFSIOWriteOptions } from './types';
 
+/**
+ * IO operations of feed file.
+ */
 abstract class FeedFileIO {
   /** File information */
   protected fileInfo: GTFSFileInfo;
@@ -100,6 +103,9 @@ export class GTFSFeedFileIO<RowType extends GTFSFileRow = GTFSFileRow> extends F
   }
 };
 
+/**
+ * Class for asynchronous IO operations on a GTFS feed file
+ */
 export class GTFSAsyncFeedFileIO<RowType extends GTFSFileRow = GTFSFileRow> extends FeedFileIO {
   /**
    * Read lines into records.

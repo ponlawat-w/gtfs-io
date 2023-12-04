@@ -1,13 +1,24 @@
 import { GTFSFeedBase } from './base';
-import type { GTFSFileRow } from '../types';
-import type { GTFSTableName } from '../file-info';
 import { GTFSAsyncIterableFeed, GTFSIterableFeed } from './iterable';
+import type { GTFSTableName } from '../file-info';
+import type { GTFSFileRow } from '../types';
 
+/**
+ * GTFS Feed that is loaded into memory, records type being array.
+ */
 export class GTFSLoadedFeed extends GTFSFeedBase<GTFSFileRow[]> {
-  public constructor(defaultValues: Partial<Record<GTFSTableName, GTFSFileRow[]>> = {}) {
-    super(defaultValues, (() => [])());
+  /**
+   * Constructor
+   * @param initialValues Initial values
+   */
+  public constructor(initialValues: Partial<Record<GTFSTableName, GTFSFileRow[]>> = {}) {
+    super(initialValues, () => []);
   }
 
+  /**
+   * Convert records into generator function and return an instance of iterable feed.
+   * @returns Iterable feed
+   */
   public getIterable(): GTFSIterableFeed {
     const feed = new GTFSIterableFeed({});
     for (const table of this.getAllTables()) {
@@ -16,6 +27,10 @@ export class GTFSLoadedFeed extends GTFSFeedBase<GTFSFileRow[]> {
     return feed;
   }
 
+  /**
+   * Convert records into asynchronous generator function and return an instance of async iterable feed.
+   * @returns Async iterable feed
+   */
   public getAsyncIterable(): GTFSAsyncIterableFeed {
     const feed = new GTFSAsyncIterableFeed({});
     for (const table of this.getAllTables()) {
