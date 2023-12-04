@@ -13,6 +13,7 @@ import {
   GTFSWheelchairAccessbility
 } from '../dist';
 import type { GTFSFileContent, GTFSLoadedFeed } from '../dist';
+import { GTFSAsyncFeedReader } from '../dist/io/feed-reader';
 
 const ZIP_PATH = './tests/data/gtfs.zip';
 const DIR_PATH = './tests/data/gtfs';
@@ -140,11 +141,28 @@ const assert = (feed: GTFSLoadedFeed) => {
   expect(feed.trips[0].shape_id).toEqual('SH01');
   expect(feed.trips[0].wheelchair_accessible).toEqual(GTFSWheelchairAccessbility.Accessible);
   expect(feed.trips[0].bikes_allowed).toEqual(GTFSTripBikesAllowed.NotAllowed);
-}
+};
+
+const getFiles = (): GTFSFileContent[] => [
+  { name: 'agency.txt', content: readFileSync(join(DIR_PATH, 'agency.txt')) },
+  { name: 'calendar_dates.txt', content: readFileSync(join(DIR_PATH, 'calendar_dates.txt')) },
+  { name: 'calendar.txt', content: readFileSync(join(DIR_PATH, 'calendar.txt')) },
+  { name: 'routes.txt', content: readFileSync(join(DIR_PATH, 'routes.txt')) },
+  { name: 'shapes.txt', content: readFileSync(join(DIR_PATH, 'shapes.txt')) },
+  { name: 'stop_times.txt', content: readFileSync(join(DIR_PATH, 'stop_times.txt')) },
+  { name: 'stops.txt', content: readFileSync(join(DIR_PATH, 'stops.txt')) },
+  { name: 'trips.txt', content: readFileSync(join(DIR_PATH, 'trips.txt')) }
+];
 
 test('Test FeedReader: zip path', () => {
   const reader = GTFSFeedReader.fromZip(ZIP_PATH);
   const feed = reader.loadFeed();
+  assert(feed);
+});
+
+test('Test AsyncFeedReader: zip path', async() => {
+  const reader = GTFSAsyncFeedReader.fromZip(ZIP_PATH);
+  const feed = await reader.loadFeed();
   assert(feed);
 });
 
@@ -155,24 +173,33 @@ test('Test FeedReader: zip content', () => {
   assert(feed);
 });
 
+test('Test AsyncFeedReader: zip content', async() => {
+  const zip = readFileSync(ZIP_PATH);
+  const reader = GTFSAsyncFeedReader.fromZip(zip);
+  const feed = await reader.loadFeed();
+  assert(feed);
+});
+
 test('Test FeedReader: directory path', () => {
   const reader = GTFSFeedReader.fromDir(DIR_PATH);
   const feed = reader.loadFeed();
   assert(feed);
 });
 
+test('Test AsyncFeedReader: directory path', async () => {
+  const reader = GTFSAsyncFeedReader.fromDir(DIR_PATH);
+  const feed = await reader.loadFeed();
+  assert(feed);
+});
+
 test('Test FeedReader: file contents', () => {
-  const files: GTFSFileContent[] = [
-    { name: 'agency.txt', content: readFileSync(join(DIR_PATH, 'agency.txt')) },
-    { name: 'calendar_dates.txt', content: readFileSync(join(DIR_PATH, 'calendar_dates.txt')) },
-    { name: 'calendar.txt', content: readFileSync(join(DIR_PATH, 'calendar.txt')) },
-    { name: 'routes.txt', content: readFileSync(join(DIR_PATH, 'routes.txt')) },
-    { name: 'shapes.txt', content: readFileSync(join(DIR_PATH, 'shapes.txt')) },
-    { name: 'stop_times.txt', content: readFileSync(join(DIR_PATH, 'stop_times.txt')) },
-    { name: 'stops.txt', content: readFileSync(join(DIR_PATH, 'stops.txt')) },
-    { name: 'trips.txt', content: readFileSync(join(DIR_PATH, 'trips.txt')) }
-  ];
-  const reader = GTFSFeedReader.fromFiles(files);
+  const reader = GTFSFeedReader.fromFiles(getFiles());
   const feed = reader.loadFeed();
+  assert(feed);
+});
+
+test('Test AsyncFeedReader: file contents', async() => {
+  const reader = GTFSAsyncFeedReader.fromFiles(getFiles());
+  const feed = await reader.loadFeed();
   assert(feed);
 });

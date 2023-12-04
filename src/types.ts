@@ -58,7 +58,7 @@ export type GTFSFileRow = GTFSAgency
 export type GTFSFileRecords<RowType extends GTFSFileRow = GTFSFileRow> = IterableIterator<RowType>|RowType[];
 
 /** GTFS async file records or loaded array */
-export type GTFSAsyncFileRecords<RowType extends GTFSFileRow = GTFSFileRow> = AsyncIterableIterator<RowType>|RowType[];
+export type GTFSAsyncFileRecords<RowType extends GTFSFileRow = GTFSFileRow> = AsyncIterableIterator<RowType>;
 
 /** GTFS iterable for an individual file */
 export type GTFSIterableFeedFile = {
