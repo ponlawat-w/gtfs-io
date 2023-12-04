@@ -3,9 +3,10 @@ import AdmZip from 'adm-zip';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'fs';
 import { join as joinPath } from 'path';
 import {
+  GTFSAsyncFeedWriter,
   GTFSContinuousPickupDropOff,
-  GTFSFeed,
   GTFSFeedWriter,
+  GTFSLoadedFeed,
   GTFSRouteType,
   GTFSStopTimePickupDropOff,
   GTFSStopTimeTimepoint,
@@ -17,7 +18,7 @@ import {
 const OUTPUT_DIR = './tests/data/ignore';
 const COMPARE_DIR = './tests/data/gtfs';
 
-const getTestFeed = (): GTFSFeed => ({
+const getTestFeed = (): GTFSLoadedFeed => new GTFSLoadedFeed({
   agency: [{
     agency_id: 'A01',
     agency_name: 'This Agency',
@@ -110,6 +111,34 @@ test('Test FeedWriter: zip', () => {
   }
 });
 
+test('Test AsyncFeedWriter: zip', async() => {
+  const dir = joinPath(OUTPUT_DIR, 'zip');
+  const path = joinPath(dir, 'gtfs.zip');
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
+  }
+  await GTFSAsyncFeedWriter.writeZip(getTestFeed(), path);
+
+  expect(existsSync(path)).toBeTruthy();
+
+  const zip = new AdmZip(path);
+  const entries = zip.getEntries();
+  expect(entries.length).toEqual(8);
+  const files = [
+    'agency.txt', 'calendar_dates.txt', 'calendar.txt', 'routes.txt', 'shapes.txt', 'stop_times.txt', 'stops.txt', 'trips.txt'
+  ];
+  expect(entries.map(x => x.entryName).every(x => files.indexOf(x) > -1)).toBeTruthy();
+
+  for (const entry of entries) {
+    expect(
+      entry.getData().toString().split(/\r?\n/g),
+      entry.entryName
+    ).toEqual(
+      readFileSync(joinPath(COMPARE_DIR, entry.entryName)).toString().split(/\r?\n/g)
+    );
+  }
+});
+
 test('Test FeedWriter: dir', () => {
   const path = joinPath(OUTPUT_DIR, 'gtfs');
   if (existsSync(path)) {
@@ -134,8 +163,47 @@ test('Test FeedWriter: dir', () => {
   }
 });
 
+test('Test AsyncFeedWriter: dir', async() => {
+  const path = joinPath(OUTPUT_DIR, 'gtfs');
+  if (existsSync(path)) {
+    for (const file of readdirSync(path).filter(x => x.endsWith('.txt')).map(x => joinPath(path, x))) {
+      rmSync(file);
+    }
+  }
+
+  await GTFSAsyncFeedWriter.writeDirectory(getTestFeed(), path);
+  const files = [
+    'agency.txt', 'calendar_dates.txt', 'calendar.txt', 'routes.txt', 'shapes.txt', 'stop_times.txt', 'stops.txt', 'trips.txt'
+  ];
+
+  expect(files.every(x => existsSync(joinPath(path, x)))).toBeTruthy();
+  for (const file of files) {
+    expect(
+      readFileSync(joinPath(path, file)).toString().split(/\r?\n/g),
+      file
+    ).toEqual(
+      readFileSync(joinPath(COMPARE_DIR, file)).toString().split(/\r?\n/g)
+    );
+  }
+});
+
 test('Test FeedWriter: contents', () => {
   const contents = GTFSFeedWriter.createFileContents(getTestFeed());
+  expect(contents.length).toEqual(8);
+
+  const files = [
+    'agency.txt', 'calendar_dates.txt', 'calendar.txt', 'routes.txt', 'shapes.txt', 'stop_times.txt', 'stops.txt', 'trips.txt'
+  ];
+  expect(contents.every(c => files.indexOf(c.name) > -1)).toBeTruthy();
+
+  for (const content of contents) {
+    expect(content.content.toString().split(/\r?\n/g), content.name)
+      .toEqual(readFileSync(joinPath(COMPARE_DIR, content.name)).toString().split(/\r?\n/g));
+  }
+});
+
+test('Test AsyncFeedWriter: contents', async() => {
+  const contents = await GTFSAsyncFeedWriter.createFileContents(getTestFeed());
   expect(contents.length).toEqual(8);
 
   const files = [

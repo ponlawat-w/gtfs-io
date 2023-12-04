@@ -87,6 +87,7 @@ export class GTFSFeedBase<RecordsType> {
   public attributions?: RecordsGenericType<RecordsType, GTFSAttribution>;
 
   protected constructor(defaultValues: Partial<Record<GTFSTableName, RecordsGenericType<RecordsType>>>, emptyValue: RecordsType) {
+    Object.assign(this, defaultValues);
     this.agency = defaultValues.agency as RecordsGenericType<RecordsType, GTFSAgency> ?? emptyValue;
     this.stops = defaultValues.stops as RecordsGenericType<RecordsType, GTFSStop> ?? emptyValue;
     this.routes = defaultValues.routes as RecordsGenericType<RecordsType, GTFSRoute> ?? emptyValue;

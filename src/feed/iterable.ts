@@ -15,6 +15,15 @@ export class GTFSIterableFeed extends GTFSFeedBase<GTFSFileRecords> {
     }
     return result;
   }
+
+  public toAsync(): GTFSAsyncIterableFeed {
+    const result = new GTFSAsyncIterableFeed();
+    for (const table of this.getAllTables()) {
+      const generator = async function*() { for (const record of table.records) yield record; };
+      result.setTable(table.name, generator());
+    }
+    return result;
+  }
 };
 
 export class GTFSAsyncIterableFeed extends GTFSFeedBase<GTFSAsyncFileRecords> {

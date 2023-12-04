@@ -4,6 +4,7 @@ import { test, expect } from 'vitest';
 import {
   GTFSContinuousPickupDropOff,
   GTFSFeedReader,
+  GTFSAsyncFeedReader,
   GTFSRouteType,
   GTFSStopLocationType,
   GTFSStopTimePickupDropOff,
@@ -13,7 +14,6 @@ import {
   GTFSWheelchairAccessbility
 } from '../dist';
 import type { GTFSFileContent, GTFSLoadedFeed } from '../dist';
-import { GTFSAsyncFeedReader } from '../dist/io/feed-reader';
 
 const ZIP_PATH = './tests/data/gtfs.zip';
 const DIR_PATH = './tests/data/gtfs';
