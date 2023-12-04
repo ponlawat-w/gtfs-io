@@ -10,19 +10,17 @@ import {
 import { join as joinPath } from 'path';
 import { getAsyncIOFromFileName, getIOFromFileName } from './feed-file';
 import { getGTFSFileInfos } from '../file-info';
-import type { GTFSFileInfo, GTFSFileName } from '../file-info';
+import type { GTFSFileInfo, GTFSTableName } from '../file-info';
 import type {
-  GTFSAsyncFeed,
   GTFSAsyncFileRecords,
-  GTFSAsyncIterableFeedFile,
-  GTFSAsyncIterableFeedFiles,
-  GTFSFeed,
   GTFSFileContent,
   GTFSFileRecords,
   GTFSFileRow,
   GTFSIterableFeedFiles,
-  GTFSLoadedFeed
 } from '../types';
+import { GTFSFeedBase } from '../feed/base';
+import { GTFSLoadedFeed } from '../feed/loaded';
+import { GTFSAsyncIterableFeed, GTFSIterableFeed } from '../feed/iterable';
 
 /**
  * GTFS file object to read
@@ -39,12 +37,7 @@ type GTFSFile = {
 /**
  * GTFS feed reader abstract
  */
-abstract class FeedReader<
-  LoadedFeedType extends GTFSLoadedFeed|Promise<GTFSLoadedFeed>,
-  FeedType extends GTFSFeed|Promise<GTFSAsyncFeed>,
-  IterableFeedFilesType extends GTFSIterableFeedFiles|GTFSAsyncIterableFeedFiles,
-  RecordsType extends GTFSFileRecords|GTFSAsyncFileRecords
-> {
+abstract class FeedReader<RecordsType, FeedType extends GTFSFeedBase<RecordsType>|Promise<GTFSFeedBase<RecordsType>>> {
   /** Zip object */
   protected zip?: AdmZip = undefined;
 
@@ -70,7 +63,7 @@ abstract class FeedReader<
     this.files = [];
     if (directoryPath) {
       for (const info of getGTFSFileInfos()) {
-        const path = joinPath(directoryPath, info.name);
+        const path = joinPath(directoryPath, info.fileName);
         if (!exists(path)) continue;
         this.files.push({ info, path });
       }
@@ -78,7 +71,7 @@ abstract class FeedReader<
     }
     if (fileContents) {
       for (const info of getGTFSFileInfos()) {
-        const file = fileContents.filter(f => f.name === info.name);
+        const file = fileContents.filter(f => f.name === info.fileName);
         if (!file.length) continue;
         this.files.push({ info, buffer: Buffer.from(file[0].content) })
       }
@@ -107,16 +100,17 @@ abstract class FeedReader<
 
   /**
    * From file information, get records.
+   * Undefined if file does not exist in the feed.
    * @param info file information
    * @returns Records
    */
-  public getRecordsFromFileInfo(info: GTFSFileInfo): RecordsType|undefined {
+  public getRecords(info: GTFSFileInfo): RecordsType|undefined {
     if (this.zip) {
-      const entry = this.zip.getEntries().filter(entry => entry.entryName === info.name);
+      const entry = this.zip.getEntries().filter(entry => entry.entryName === info.fileName);
       if (!entry.length) return undefined;
       return this.getRecordsFromZipEntry(info, entry[0]);
     } else if (this.files) {
-      const file = this.files.filter(f => f.info.name === info.name);
+      const file = this.files.filter(f => f.info.fileName === info.fileName);
       if (!file.length) return undefined;
       if (file[0].path) {
         return this.getRecordsFromFilePath(info, file[0].path);
@@ -128,20 +122,10 @@ abstract class FeedReader<
   }
 
   /**
-   * Get files existing in the feed and return their iterables (without reading them yet, depending on the initialisation).
-   * @returns Iterable feed files
-   */
-  public abstract getIterableFiles(): IterableFeedFilesType;
-  /**
    * Get feed object with row being file name without .txt and value being iterable records.
    * @returns Feed object with row being file name without .txt and value being iterable records.
    */
   public abstract getFeed(): FeedType;
-  /**
-   * Get feed object with row being file name without .txt and value being array of records.
-   * @returns Feed object with row being file name without .txt and value being array of records.
-   */
-  public abstract loadFeed(): LoadedFeedType;
 };
 
 /**
@@ -151,7 +135,7 @@ abstract class FeedReader<
  * GTFSFeedReader.fromDir,
  * GTFSFeedReader.fromFiles
  */
-export class GTFSFeedReader extends FeedReader<GTFSLoadedFeed, GTFSFeed, GTFSIterableFeedFiles, GTFSFileRecords> {
+export class GTFSFeedReader extends FeedReader<GTFSFileRecords, GTFSIterableFeed> {
   /**
    * Generator of iterable chunks from a file path.
    * @param filePath File path
@@ -176,12 +160,12 @@ export class GTFSFeedReader extends FeedReader<GTFSLoadedFeed, GTFSFeed, GTFSIte
   }
 
   protected getRecordsFromZipEntry(info: GTFSFileInfo, entry: AdmZip.IZipEntry): GTFSFileRecords {
-    const io = getIOFromFileName(info.name);
-    return io.readContent(entry.getData().toString());
+    const io = getIOFromFileName(info.fileName);
+    return io.readContent(entry.getData().toString()).values();
   }
   
   protected *getRecordsFromFilePath(info: GTFSFileInfo, path: string): GTFSFileRecords {
-    const io = getIOFromFileName(info.name);
+    const io = getIOFromFileName(info.fileName);
     const chunks = GTFSFeedReader.readFileChunks(path);
     for (const record of io.read(chunks)) {
       yield record;
@@ -189,45 +173,24 @@ export class GTFSFeedReader extends FeedReader<GTFSLoadedFeed, GTFSFeed, GTFSIte
   }
 
   protected getRecordsFromFileContent(info: GTFSFileInfo, content: Buffer): GTFSFileRecords {
-    const io = getIOFromFileName(info.name);
-    return io.readContent(content.toString());
+    const io = getIOFromFileName(info.fileName);
+    return io.readContent(content.toString()).values();
   }
 
-  public *getIterableFiles(): GTFSIterableFeedFiles {
-    for (const info of getGTFSFileInfos()) {
-      const records = this.getRecordsFromFileInfo(info);
+  public getFeed(): GTFSIterableFeed {
+    const feed = new GTFSIterableFeed();
+
+    for (const fileInfo of getGTFSFileInfos()) {
+      const records = this.getRecords(fileInfo);
       if (records === undefined) continue;
-      yield { info, records };
-    }
-    return;
-  }
-
-  public getFeed(): GTFSFeed {
-    const results: Partial<Record<GTFSFileName, GTFSFileRecords>> = {
-      agency: [],
-      stops: [],
-      routes: [],
-      trips: [],
-      stop_times: []
-    };
-
-    for (const file of this.getIterableFiles()) {
-      const key = file.info.name.slice(0, file.info.name.length - 4) as GTFSFileName;
-      results[key] = file.records;
+      feed.setTable(fileInfo.tableName, records);
     }
 
-    return results as GTFSFeed;
+    return feed;
   }
 
   public loadFeed(): GTFSLoadedFeed {
-    const feed = this.getFeed();
-    const results: Partial<Record<string, GTFSFileRow[]>> = {};
-
-    for (const key of Object.keys(feed) as GTFSFileName[]) {
-      results[key] = [...feed[key]!];
-    }
-
-    return results as GTFSLoadedFeed;
+    return this.getFeed().load();
   }
 
   /**
@@ -258,7 +221,7 @@ export class GTFSFeedReader extends FeedReader<GTFSLoadedFeed, GTFSFeed, GTFSIte
   }
 };
 
-export class GTFSAsyncFeedReader extends FeedReader<Promise<GTFSLoadedFeed>, Promise<GTFSAsyncFeed>, GTFSAsyncIterableFeedFiles, GTFSAsyncFileRecords> {
+export class GTFSAsyncFeedReader extends FeedReader<GTFSAsyncFileRecords, Promise<GTFSAsyncIterableFeed>> {
   /**
    * Generator of iterable chunks from a file path.
    * @param filePath File path
@@ -291,68 +254,36 @@ export class GTFSAsyncFeedReader extends FeedReader<Promise<GTFSLoadedFeed>, Pro
   }
 
   protected getRecordsFromZipEntry(info: GTFSFileInfo, entry: AdmZip.IZipEntry): GTFSAsyncFileRecords {
-    const io = getAsyncIOFromFileName(info.name);
+    const io = getAsyncIOFromFileName(info.fileName);
     const generator = async function*() { yield entry.getData().toString(); };
     return io.read(generator());
   }
 
   protected getRecordsFromFilePath(info: GTFSFileInfo, path: string): GTFSAsyncFileRecords {
-    const io = getAsyncIOFromFileName(info.name);
+    const io = getAsyncIOFromFileName(info.fileName);
     return io.read(GTFSAsyncFeedReader.readFileChunks(path));
   }
 
   protected getRecordsFromFileContent(info: GTFSFileInfo, content: Buffer): GTFSAsyncFileRecords {
-    const io = getAsyncIOFromFileName(info.name);
+    const io = getAsyncIOFromFileName(info.fileName);
     const generator = async function*() { yield content.toString(); };
     return io.read(generator());
   }
 
-  public async *getIterableFiles(): GTFSAsyncIterableFeedFiles {
-    for (const info of getGTFSFileInfos()) {
-      const records = this.getRecordsFromFileInfo(info);
+  public async getFeed(): Promise<GTFSAsyncIterableFeed> {
+    const feed = new GTFSAsyncIterableFeed();
+
+    for (const fileInfo of getGTFSFileInfos()) {
+      const records = this.getRecords(fileInfo);
       if (records === undefined) continue;
-      yield { info, records };
-    }
-    return;
-  }
-
-  public async getFeed(): Promise<GTFSAsyncFeed> {
-    const empty = async function*() {};
-    const results: Partial<Record<GTFSFileName, GTFSAsyncFileRecords>> = {
-      agency: empty(),
-      stops: empty(),
-      routes: empty(),
-      trips: empty(),
-      stop_times: empty()
-    };
-
-    for await (const file of this.getIterableFiles()) {
-      const key = file.info.name.slice(0, file.info.name.length - 4) as GTFSFileName;
-      results[key] = file.records;
+      feed.setTable(fileInfo.tableName, records);
     }
 
-    return results as GTFSAsyncFeed;
+    return feed;
   }
 
   public async loadFeed(): Promise<GTFSLoadedFeed> {
-    const results: Partial<Record<GTFSFileName, GTFSFileRow[]>> = {
-      agency: [],
-      stops: [],
-      routes: [],
-      trips: [],
-      stop_times: []
-    };
-
-    for await (const file of this.getIterableFiles()) {
-      const key = file.info.name.slice(0, file.info.name.length - 4) as GTFSFileName;
-      if (results[key] === undefined) results[key] = [];
-
-      for await (const record of file.records) {
-        results[key]!.push(record);
-      }
-    }
-
-    return results as GTFSLoadedFeed;
+    return (await this.getFeed()).load();
   }
 
   /**

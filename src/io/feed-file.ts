@@ -38,7 +38,7 @@ abstract class FeedFileIO {
    * File name including .txt.
    */
   public get fileName(): string {
-    return this.fileInfo.name;
+    return this.fileInfo.fileName;
   }
 
   /**

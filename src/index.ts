@@ -1,7 +1,10 @@
 export { GTFSFileIO, GTFSAsyncFileIO } from './io/file';
-export { GTFSFeedReader } from './io/feed-reader';
-export { default as GTFSFeedWriter } from './io/feed-writer';
 export * from './io/feed-file';
+export { GTFSFeedReader } from './io/feed-reader';
+// export { default as GTFSFeedWriter } from './io/feed-writer';
+
+export * from './feed/iterable';
+export * from './feed/loaded';
 export * from './file-info';
 
 export { GTFSCalendarDateException } from './files/calendar-date';

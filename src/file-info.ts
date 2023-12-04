@@ -1,7 +1,9 @@
 /** GTFS file information */
 export type GTFSFileInfo = {
+  /** Table name (file name without .txt) */
+  tableName: GTFSTableName,
   /** File name including .txt */
-  name: string,
+  fileName: string,
   /**
    * Columns in file name, key being column name and value being type:
    * string: interpret value as string (using .toString()),
@@ -15,7 +17,7 @@ export type GTFSFileInfo = {
 /**
  * GTFS file name
  */
-export type GTFSFileName = 'agency'
+export type GTFSTableName = 'agency'
   | 'stops'
   | 'routes'
   | 'trips'
@@ -45,9 +47,10 @@ export type GTFSFileName = 'agency'
 /**
  * GTFS files information
  */
-export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
+export const GTFS_FILES: Record<GTFSTableName, GTFSFileInfo> = {
   agency: {
-    name: 'agency.txt',
+    tableName: 'agency',
+    fileName: 'agency.txt',
     columns: {
       agency_id: 'string',
       agency_name: 'string',
@@ -60,7 +63,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   stops: {
-    name: 'stops.txt',
+    tableName: 'stops',
+    fileName: 'stops.txt',
     columns: {
       stop_id: 'string',
       stop_code: 'string',
@@ -80,7 +84,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   routes: {
-    name: 'routes.txt',
+    tableName: 'routes',
+    fileName: 'routes.txt',
     columns: {
       route_id: 'string',
       agency_id: 'string',
@@ -98,7 +103,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   trips: {
-    name: 'trips.txt',
+    tableName: 'trips',
+    fileName: 'trips.txt',
     columns: {
       route_id: 'string',
       service_id: 'string',
@@ -113,7 +119,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   stop_times: {
-    name: 'stop_times.txt',
+    tableName: 'stop_times',
+    fileName: 'stop_times.txt',
     columns: {
       trip_id: 'string',
       arrival_time: 'string',
@@ -130,7 +137,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   calendar: {
-    name: 'calendar.txt',
+    tableName: 'calendar',
+    fileName: 'calendar.txt',
     columns: {
       service_id: 'string',
       monday: 'int',
@@ -145,7 +153,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   calendar_dates: {
-    name: 'calendar_dates.txt',
+    tableName: 'calendar_dates',
+    fileName: 'calendar_dates.txt',
     columns: {
       service_id: 'string',
       date: 'string',
@@ -153,7 +162,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   fare_attributes: {
-    name: 'fare_attributes.txt',
+    tableName: 'fare_attributes',
+    fileName: 'fare_attributes.txt',
     columns: {
       fare_id: 'string',
       price: 'float',
@@ -165,7 +175,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   fare_rules: {
-    name: 'fare_rules.txt',
+    tableName: 'fare_rules',
+    fileName: 'fare_rules.txt',
     columns: {
       fare_id: 'string',
       route_id: 'string',
@@ -175,7 +186,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   timeframes: {
-    name: 'timeframes.txt',
+    tableName: 'timeframes',
+    fileName: 'timeframes.txt',
     columns: {
       timeframe_group_id: 'string',
       start_time: 'string',
@@ -184,7 +196,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   fare_media: {
-    name: 'fare_media.txt',
+    tableName: 'fare_media',
+    fileName: 'fare_media.txt',
     columns: {
       fare_media_id: 'string',
       fare_media_name: 'string',
@@ -192,7 +205,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   fare_products: {
-    name: 'fare_products.txt',
+    tableName: 'fare_products',
+    fileName: 'fare_products.txt',
     columns: {
       fare_product_id: 'string',
       fare_product_name: 'string',
@@ -202,7 +216,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   fare_leg_rules: {
-    name: 'fare_leg_rules.txt',
+    tableName: 'fare_leg_rules',
+    fileName: 'fare_leg_rules.txt',
     columns: {
       leg_group_id: 'string',
       network_id: 'string',
@@ -214,7 +229,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   fare_transfer_rules: {
-    name: 'fare_transfer_rules.txt',
+    tableName: 'fare_transfer_rules',
+    fileName: 'fare_transfer_rules.txt',
     columns: {
       from_leg_group_id: 'string',
       to_leg_group_id: 'string',
@@ -226,35 +242,40 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   areas: {
-    name: 'areas.txt',
+    tableName: 'areas',
+    fileName: 'areas.txt',
     columns: {
       area_id: 'string',
       area_name: 'string'
     }
   },
   stop_areas: {
-    name: 'stop_areas.txt',
+    tableName: 'stop_areas',
+    fileName: 'stop_areas.txt',
     columns: {
       area_id: 'string',
       stop_id: 'string'
     }
   },
   networks: {
-    name: 'networks.txt',
+    tableName: 'networks',
+    fileName: 'networks.txt',
     columns: {
       network_id: 'string',
       network_name: 'string'
     }
   },
   route_networks: {
-    name: 'route_networks.txt',
+    tableName: 'route_networks',
+    fileName: 'route_networks.txt',
     columns: {
       network_id: 'string',
       route_id: 'string'
     }
   },
   shapes: {
-    name: 'shapes.txt',
+    tableName: 'shapes',
+    fileName: 'shapes.txt',
     columns: {
       shape_id: 'string',
       shape_pt_lat: 'float',
@@ -264,7 +285,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   frequencies: {
-    name: 'frequencies.txt',
+    tableName: 'frequencies',
+    fileName: 'frequencies.txt',
     columns: {
       trip_id: 'string',
       start_time: 'string',
@@ -274,7 +296,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   transfers: {
-    name: 'transfers.txt',
+    tableName: 'transfers',
+    fileName: 'transfers.txt',
     columns: {
       from_stop_id: 'string',
       to_stop_id: 'string',
@@ -287,7 +310,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   pathways: {
-    name: 'pathways.txt',
+    tableName: 'pathways',
+    fileName: 'pathways.txt',
     columns: {
       pathway_id: 'string',
       from_stop_id: 'string',
@@ -304,7 +328,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   levels: {
-    name: 'levels.txt',
+    tableName: 'levels',
+    fileName: 'levels.txt',
     columns: {
       level_id: 'string',
       level_index: 'float',
@@ -312,7 +337,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   translations: {
-    name: 'translations.txt',
+    tableName: 'translations',
+    fileName: 'translations.txt',
     columns: {
       table_name: 'string',
       field_name: 'string',
@@ -324,7 +350,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   feed_info: {
-    name: 'feed_info.txt',
+    tableName: 'feed_info',
+    fileName: 'feed_info.txt',
     columns: {
       feed_publisher_name: 'string',
       feed_publisher_url: 'string',
@@ -338,7 +365,8 @@ export const GTFS_FILES: Record<GTFSFileName, GTFSFileInfo> = {
     }
   },
   attributions: {
-    name: 'attributions.txt',
+    tableName: 'attributions',
+    fileName: 'attributions.txt',
     columns: {
       attribution_id: 'string',
       agency_id: 'string',
