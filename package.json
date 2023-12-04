@@ -1,9 +1,12 @@
 {
   "name": "gtfs-io",
   "type": "module",
-  "version": "0.0.2",
-  "description": "Type definitions and IO operations for GTFS datasets",
+  "version": "0.0.3",
+  "description": "Type definitions and IO operations for reading and writing GTFS datasets",
   "main": "dist/index.js",
+  "keywords": [
+    "gtfs", "read", "write", "reading", "writing"
+  ],
   "scripts": {
     "build": "npx tsc",
     "pack": "npm run build && npx webpack",
