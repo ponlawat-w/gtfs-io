@@ -87,15 +87,6 @@ export class GTFSFeedFileIO<RowType extends GTFSFileRow = GTFSFileRow> {
   }
 
   /**
-   * Write records array into line strings array.
-   * @param records Records array
-   * @returns Lines array
-   */
-  public writeLines(records: RowType[]): string[] {
-    return GTFSFileIO.writeLines(this.fileInfo, records);
-  }
-
-  /**
    * Write records array into file content.
    * @param records Records array
    * @returns File content

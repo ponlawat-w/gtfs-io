@@ -83,7 +83,7 @@ describe('Test GTFSFileIO writing', () => {
   ];
 
   it('writes records into rows', () => {
-    const content = GTFSFileIO.writeContent(GTFS_FILES.trips, records);
+    const content = GTFSFileIO.writeContent(GTFS_FILES.trips, records, { recordsBufferSize: 2 });
     expect(content).toEqual(
       'route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible,bikes_allowed\n'
       + 'R01,S01,T01,,,0,,,,\n'

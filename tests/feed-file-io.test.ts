@@ -41,9 +41,8 @@ const assert = (io: GTFSFeedFileIO, fileName: string, fileInfo: GTFSFileInfo) =>
   expect(records.length).toEqual(1);
   expect(Object.keys(records[0])).toEqual(io.columns);
 
-  const lines = io.writeLines(records);
-  expect(lines.length).toEqual(2);
-  expect(lines[0]).toEqual(io.columns.join(',') + '\n');
+  const writtenContent = io.writeContent(records);
+  expect(writtenContent).toEqual(content + '\n');
 }
 
 test('Test agency.txt IO', () => {
