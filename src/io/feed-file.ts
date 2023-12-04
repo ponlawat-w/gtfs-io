@@ -1,4 +1,4 @@
-import GTFSFileIO from './file';
+import { GTFSFileIO } from './file';
 import { GTFS_FILES } from '../file-info';
 import type { GTFSFileInfo } from '../file-info';
 import type { GTFSFileRow } from '../types';

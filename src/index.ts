@@ -1,4 +1,4 @@
-export { default as GTFSFileIO } from './io/file';
+export { GTFSFileIO, GTFSAsyncFileIO } from './io/file';
 export { default as GTFSFeedReader } from './io/feed-reader';
 export { default as GTFSFeedWriter } from './io/feed-writer';
 export * from './io/feed-file';

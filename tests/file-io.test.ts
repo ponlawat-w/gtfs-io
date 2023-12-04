@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   GTFS_FILES,
+  GTFSAsyncFileIO,
   GTFSFileIO,
   GTFSStopLocationType,
   GTFSTripDirection
@@ -65,6 +66,17 @@ describe('Test GTFSFileIO reading', () => {
     expect(recordsFromChunks[3]).toEqual(recordsFromContent[3]);
   });
 
+  it('asynchronously reads chunks into records', async() => {
+    const recordsFromContent = GTFSFileIO.readContent<GTFSStop>(GTFS_FILES.stops, content);
+    const chunksGenerator = async function*() { for (const chunk of chunks) yield chunk; };
+    const recordsFromChunks = await GTFSAsyncFileIO.readAll(GTFS_FILES.stops, chunksGenerator());
+    expect(recordsFromChunks.length).toEqual(recordsFromContent.length);
+    expect(recordsFromChunks[0]).toEqual(recordsFromContent[0]);
+    expect(recordsFromChunks[1]).toEqual(recordsFromContent[1]);
+    expect(recordsFromChunks[2]).toEqual(recordsFromContent[2]);
+    expect(recordsFromChunks[3]).toEqual(recordsFromContent[3]);
+  });
+
   it('handles empty file content', () => {
     const content = 'stop_id,stop_name,stop_code,stop_desc,stop_lat,stop_lon,location_type,parent_station\n';
     const records = GTFSFileIO.readContent<GTFSStop>(GTFS_FILES.stops, content);
@@ -84,6 +96,19 @@ describe('Test GTFSFileIO writing', () => {
 
   it('writes records into rows', () => {
     const content = GTFSFileIO.writeContent(GTFS_FILES.trips, records, { recordsBufferSize: 2 });
+    expect(content).toEqual(
+      'route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible,bikes_allowed\n'
+      + 'R01,S01,T01,,,0,,,,\n'
+      + 'R01,S02,T02,HEADSIGN,,,,,,\n'
+      + 'R03,S01,T03,"with,comma",,,,,,\n'
+      + 'R02,S02,T04,"with\n'
+      + 'newline",,,,,,\n'
+    );
+  });
+
+  it('asynchronously writes records into rows', async() => {
+    const recordsGenerator = async function*() { for (const record of records) yield record; };
+    const content = await GTFSAsyncFileIO.writeAll(GTFS_FILES.trips, recordsGenerator(), { recordsBufferSize: 2 });
     expect(content).toEqual(
       'route_id,service_id,trip_id,trip_headsign,trip_short_name,direction_id,block_id,shape_id,wheelchair_accessible,bikes_allowed\n'
       + 'R01,S01,T01,,,0,,,,\n'

@@ -38,7 +38,9 @@ export default class GTFSFeedWriter {
     const files = GTFSFeedWriter.getIterableFiles(feed);
     for (const file of files) {
       const io = getIOFromFileName(file.info.name);
-      zip.addFile(io.fileName, Buffer.from([...io.write(file.records)].join('')));
+      zip.addFile(io.fileName, Buffer.from(
+        Array.isArray(file.records) ? io.writeContent(file.records) : [...io.write(file.records)].join('')
+      ));
     }
     return zip;
   }
@@ -55,7 +57,7 @@ export default class GTFSFeedWriter {
       const io = getIOFromFileName(file.info.name);
       fileContents.push({
         name: io.fileName,
-        content: [...io.write(file.records)].join('')
+        content: Array.isArray(file.records) ? io.writeContent(file.records) : [...io.write(file.records)].join('')
       });
     }
     return fileContents;
@@ -83,21 +85,13 @@ export default class GTFSFeedWriter {
     }
     const files = GTFSFeedWriter.getIterableFiles(feed);
     const fileNames = [];
-    const bufferLineSize = 64;
     for (const file of files) {
-      let chunks = [];
       const io = getIOFromFileName(file.info.name);
       const filePath = joinPath(path, io.fileName);
       writeFileSync(filePath, '');
-      for (const row of io.write(file.records)) {
-        chunks.push(row);
-        if (chunks.length > bufferLineSize) {
-          appendFileSync(filePath, chunks.join(''));
-          chunks = [];
-        }
-      }
-      if (chunks.length) {
-        appendFileSync(filePath, chunks.join(''));
+      const contents = Array.isArray(file.records) ? [io.writeContent(file.records)] : io.write(file.records);
+      for (const content of contents) {
+        appendFileSync(filePath, content);
       }
       fileNames.push(io.fileName);
     }

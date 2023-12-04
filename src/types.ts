@@ -57,14 +57,26 @@ export type GTFSFileRow = GTFSAgency
 /** GTFS file records */
 export type GTFSFileRecords<RowType extends GTFSFileRow = GTFSFileRow> = IterableIterator<RowType>|RowType[];
 
-/** GTFS Iterable for an individual file */
+/** GTFS async file records or loaded array */
+export type GTFSAsyncFileRecords<RowType extends GTFSFileRow = GTFSFileRow> = AsyncIterableIterator<RowType>|RowType[];
+
+/** GTFS iterable for an individual file */
 export type GTFSIterableFeedFile = {
   info: GTFSFileInfo,
-  records: IterableIterator<GTFSFileRow>
+  records: GTFSFileRecords
+};
+
+/** GTFS async iterable for an individual file */
+export type GTFSAsyncIterableFeedFile = {
+  info: GTFSFileInfo,
+  records: GTFSAsyncFileRecords
 };
 
 /** GTFS Iterable feed files */
 export type GTFSIterableFeedFiles = IterableIterator<GTFSIterableFeedFile>;
+
+/** GTFS Async Iterable feed files */
+export type GTFSAsyncIterableFeedFiles = AsyncIterableIterator<GTFSAsyncIterableFeedFile>;
 
 /** GTFS feed file content */
 export type GTFSFileContent = {
@@ -128,6 +140,62 @@ export type GTFSFeed = {
   feed_info?: GTFSFileRecords<GTFSFeedInfo>,
   /** Dataset attributions. */
   attributions?: GTFSFileRecords<GTFSAttribution>
+};
+
+/** GTFS Async Dataset feed */
+export type GTFSAsyncFeed = {
+  /** Transit agencies with service represented in this dataset. */
+  agency: GTFSAsyncFileRecords<GTFSAgency>,
+  /** Stops where vehicles pick up or drop off riders. */
+  stops: GTFSAsyncFileRecords<GTFSStop>,
+  /** Transit routes. A route is a group of trips that are displayed to riders as a single service. */
+  routes: GTFSAsyncFileRecords<GTFSRoute>,
+  /** Trips for each route. */
+  trips: GTFSAsyncFileRecords<GTFSTrip>,
+  /** Times that a vehicle arrives at and departs from stops for each trip. */
+  stop_times: GTFSAsyncFileRecords<GTFSStopTime>,
+  /** Service dates specified using a weekly schedule with start and end dates. */
+  calendar?: GTFSAsyncFileRecords<GTFSCalendar>,
+  /** Exceptions for the services defined in the `calendar.txt`. */
+  calendar_dates?: GTFSAsyncFileRecords<GTFSCalendarDate>,
+  /** Fare information for a transit agency's routes. */
+  fare_attributes?: GTFSAsyncFileRecords<GTFSFareAttribute>,
+  /** Rules to apply fares for itineraries. */
+  fare_rules?: GTFSAsyncFileRecords<GTFSFareRule>,
+  /** Date and time periods to use in fare rules for fares that depend on date and time factors. */
+  timeframes?: GTFSAsyncFileRecords<GTFSTimeframe>,
+  /** To describe the fare media that can be employed to use fare products. */
+  fare_media?: GTFSAsyncFileRecords<GTFSFareMedia>,
+  /** To describe the different types of tickets or fares that can be purchased by riders. */
+  fare_products?: GTFSAsyncFileRecords<GTFSFareProduct>,
+  /** Fare rules for individual legs of travel. */
+  fare_leg_rules?: GTFSAsyncFileRecords<GTFSFareLegRule>,
+  /** Fare rules for transfers between legs of travel. */
+  fare_transfer_rules?: GTFSAsyncFileRecords<GTFSFareTransferRule>,
+  /** Area grouping of locations. */
+  areas?: GTFSAsyncFileRecords<GTFSArea>,
+  /** Rules to assign stops to areas. */
+  stop_areas?: GTFSAsyncFileRecords<GTFSStopArea>,
+  /** Network grouping of routes. */
+  networks?: GTFSAsyncFileRecords<GTFSNetwork>,
+  /** Rules to assign routes to networks. */
+  route_networks?: GTFSAsyncFileRecords<GTFSRouteNetwork>,
+  /** Rules for mapping vehicle travel paths, sometimes referred to as route alignments. */
+  shapes?: GTFSAsyncFileRecords<GTFSShape>,
+  /** Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. */
+  frequencies?: GTFSAsyncFileRecords<GTFSFrequency>,
+  /** Rules for making connections at transfer points between routes. */
+  transfers?: GTFSAsyncFileRecords<GTFSTransfer>,
+  /** Pathways linking together locations within stations. */
+  pathways?: GTFSAsyncFileRecords<GTFSPathway>,
+  /** Levels within stations. */
+  levels?: GTFSAsyncFileRecords<GTFSLevel>,
+  /** Translations of customer-facing dataset values. */
+  translations?: GTFSAsyncFileRecords<GTFSTranslation>,
+  /** Dataset metadata, including publisher, version, and expiration information. */
+  feed_info?: GTFSAsyncFileRecords<GTFSFeedInfo>,
+  /** Dataset attributions. */
+  attributions?: GTFSAsyncFileRecords<GTFSAttribution>
 };
 
 /** GTFS Dataset feed loaded to memory */
