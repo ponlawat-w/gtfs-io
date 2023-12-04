@@ -128,7 +128,7 @@ abstract class FeedReader<RecordsType, FeedType extends GTFSFeedBase<RecordsType
  * GTFS feed reader.
  * Do not use constructor, instead, use the following static methods to initiate an instance:
  * GTFSFeedReader.fromZip,
- * GTFSFeedReader.fromDir,
+ * GTFSFeedReader.fromDirectory,
  * GTFSFeedReader.fromFiles
  */
 export class GTFSFeedReader extends FeedReader<GTFSFileRecords, GTFSIterableFeed> {
@@ -203,7 +203,7 @@ export class GTFSFeedReader extends FeedReader<GTFSFileRecords, GTFSIterableFeed
    * @param dirPath Path to GTFS feed directory
    * @returns GTFSFeedWriter instance
    */
-  public static fromDir(dirPath: string): GTFSFeedReader {
+  public static fromDirectoy(dirPath: string): GTFSFeedReader {
     return new GTFSFeedReader(undefined, dirPath);
   }
 
@@ -221,7 +221,7 @@ export class GTFSFeedReader extends FeedReader<GTFSFileRecords, GTFSIterableFeed
  * GTFS feed reader.
  * Do not use constructor, instead, use the following static methods to initiate an instance:
  * GTFSFeedReader.fromZip,
- * GTFSFeedReader.fromDir,
+ * GTFSFeedReader.fromDirectory,
  * GTFSFeedReader.fromFiles
  */
 export class GTFSAsyncFeedReader extends FeedReader<GTFSAsyncFileRecords, Promise<GTFSAsyncIterableFeed>> {
@@ -303,7 +303,7 @@ export class GTFSAsyncFeedReader extends FeedReader<GTFSAsyncFileRecords, Promis
    * @param dirPath Path to GTFS feed directory
    * @returns GTFSFeedWriter instance
    */
-  public static fromDir(dirPath: string): GTFSAsyncFeedReader {
+  public static fromDirectoy(dirPath: string): GTFSAsyncFeedReader {
     return new GTFSAsyncFeedReader(undefined, dirPath);
   }
 

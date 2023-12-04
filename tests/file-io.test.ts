@@ -87,7 +87,7 @@ describe('Test GTFSFileIO reading', () => {
 });
 
 describe('Test GTFSFileIO writing', () => {
-  const records: GTFSFileRecords<GTFSTrip> = [
+  const records: GTFSTrip[] = [
     { route_id: 'R01', service_id: 'S01', trip_id: 'T01', direction_id: GTFSTripDirection.OneDirection },
     { route_id: 'R01', service_id: 'S02', trip_id: 'T02', trip_headsign: 'HEADSIGN' },
     { route_id: 'R03', service_id: 'S01', trip_id: 'T03', trip_headsign: 'with,comma' },
@@ -120,7 +120,7 @@ describe('Test GTFSFileIO writing', () => {
   });
 
   it('handles empty input', () => {
-    const records: GTFSFileRecords<GTFSRoute> = [];
+    const records: GTFSRoute[] = [];
     const content = GTFSFileIO.writeContent(GTFS_FILES.routes, records);
     expect(content).toEqual(
       'route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,'

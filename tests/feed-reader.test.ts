@@ -181,13 +181,13 @@ test('Test AsyncFeedReader: zip content', async() => {
 });
 
 test('Test FeedReader: directory path', () => {
-  const reader = GTFSFeedReader.fromDir(DIR_PATH);
+  const reader = GTFSFeedReader.fromDirectoy(DIR_PATH);
   const feed = reader.loadFeed();
   assert(feed);
 });
 
 test('Test AsyncFeedReader: directory path', async () => {
-  const reader = GTFSAsyncFeedReader.fromDir(DIR_PATH);
+  const reader = GTFSAsyncFeedReader.fromDirectoy(DIR_PATH);
   const feed = await reader.loadFeed();
   assert(feed);
 });

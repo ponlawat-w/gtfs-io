@@ -14,22 +14,39 @@
 
       var FEED = undefined;
 
-      const display = () => {
+      const reset = () => {
         document.getElementById('textarea').value = '';
-        for (const file of Object.keys(FEED)) {
-          FEED[file] = [...FEED[file]];
-          const length = FEED[file].length;
-          console.log(`${file}: ${length}`);
-          document.getElementById('textarea').value += `${file}: ${length}\n`;
-        }
+      };
+
+      const writeLine = line => {
+        document.getElementById('textarea').value += line + '\n';
+      };
+
+      const end = () => {
         document.getElementById('textarea').value += 'END\n';
+      };
+
+      const readFeed = async(feed) => {
+        reset();
+        FEED = new GTFSIO.GTFSLoadedFeed();
+        for (const table of feed.getAllTables()) {
+          const records = [];
+          for await (const record of table.records) {
+            records.push(record);
+          }
+          FEED.setTable(table.name, records);
+          const line = `${table.name} = ${records.length}`;
+          console.log(line);
+          writeLine(line);
+        }
+        end();
       };
 
       const readZip = file => {
         const reader = new FileReader();
-        reader.onload = e => {
-          FEED = GTFSIO.GTFSFeedReader.fromZip(e.target.result).getFeedSync();
-          display();
+        reader.onload = async(e) => {
+          const feed = await GTFSIO.GTFSAsyncFeedReader.fromZip(e.target.result).getFeed();
+          readFeed(feed);
         };
         reader.readAsArrayBuffer(file);
       };
@@ -51,8 +68,8 @@
           const content = await readFile(file);
           fileContents.push({ name: file.name, content });
         }
-        FEED = GTFSIO.GTFSFeedReader.fromFiles(fileContents).getFeedSync();
-        display();
+        const feed = await GTFSIO.GTFSAsyncFeedReader.fromFiles(fileContents).getFeed();
+        readFeed(feed);
       };
 
       file.onchange = e => {
@@ -66,9 +83,9 @@
         readFiles(files);
       };
 
-      document.getElementById('download').onclick = () => {
+      document.getElementById('download').onclick = async() => {
         if (!FEED) return;
-        const zip = GTFSIO.GTFSFeedWriter.createZip(FEED);
+        const zip = await GTFSIO.GTFSAsyncFeedWriter.createZip(FEED);
 
         const blob = new Blob([zip.toBuffer()], {
           type: 'application/x-zip-compressed'
