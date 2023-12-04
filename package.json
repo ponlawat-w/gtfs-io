@@ -1,11 +1,11 @@
 {
   "name": "gtfs-io",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Type definitions and IO operations for reading and writing GTFS datasets",
   "main": "dist/index.js",
   "keywords": [
-    "gtfs", "read", "write", "reading", "writing"
+    "gtfs", "read", "write", "reading", "writing", "reader", "writer"
   ],
   "scripts": {
     "build": "npx tsc",
@@ -20,6 +20,9 @@
     "name": "Ponlawat Weerapanpisit",
     "email": "ponlawat_w@outlook.co.th"
   },
+  "files": [
+    "dist/*"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ponlawat-w/gtfs-io/issues"
