@@ -1,15 +1,20 @@
 {
   "name": "gtfs-io",
   "type": "module",
-  "version": "0.0.4",
-  "description": "Type definitions and IO operations for reading and writing GTFS datasets",
+  "version": "0.0.5",
+  "description": "IO operations for reading and writing GTFS datasets and GTFS type definitions.",
   "main": "dist/index.js",
   "keywords": [
-    "gtfs", "read", "write", "reading", "writing", "reader", "writer"
+    "gtfs",
+    "read",
+    "write",
+    "reading",
+    "writing",
+    "reader",
+    "writer"
   ],
   "scripts": {
     "build": "npx tsc",
-    "pack": "npm run build && npx webpack",
     "test": "npm run build && npx vitest run --config ./vitest.config.ts"
   },
   "repository": {
@@ -30,16 +35,15 @@
   "homepage": "https://github.com/ponlawat-w/gtfs-io#readme",
   "devDependencies": {
     "@types/adm-zip": "^0.5.5",
-    "@types/node": "^20.10.1",
+    "@types/node": "^20.10.3",
     "assert": "^2.1.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.0",
     "stream-browserify": "^3.0.0",
-    "typedoc": "^0.25.4",
     "typescript": "^5.3.2",
     "util": "^0.12.5",
-    "vitest": "^0.34.6",
+    "vitest": "^1.0.1",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
