@@ -22,5 +22,5 @@ export type GTFSFareMedia = {
   /** Name of the fare media. */
   fare_media_name?: string,
   /** The type of fare media. */
-  fare_media_type: string
+  fare_media_type: GTFSFareMediaType
 };
