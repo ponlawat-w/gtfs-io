@@ -35,14 +35,16 @@ type FareTransferRule = {
 
 type NoDurationLimit = {
   /** Defines the duration limit of the transfer. */
-  duration_limit?: undefined|''
+  duration_limit?: undefined|'',
+  /** Defines the relative start and end of `fare_transfer_rules.duration_limit`. */
+  duration_limit_type?: undefined
 };
 
 type DurationLimit = {
   /** Defines the duration limit of the transfer. */
   duration_limit: number,
   /** Defines the relative start and end of `fare_transfer_rules.duration_limit`. */
-  duration_limit_type: GTFSFareTransferRuleDurationLimit,
+  duration_limit_type: GTFSFareTransferRuleDurationLimit
 };
 
 /** Fare rule for transfers between legs of travel defined in `fare_leg_rules.txt` */
