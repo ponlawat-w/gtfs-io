@@ -4,7 +4,7 @@ type TranslationByRecordID = {
   /** Defines the record that corresponds to the field to be translated. */
   record_id: string,
   /** Helps the record that contains the field to be translated when the table doesn’t have a unique ID. */
-  record_sub_id: string|number,
+  record_sub_id?: string|number,
   /** Instead of defining which record should be translated by using `record_id` and `record_sub_id`, this field can be used to define the value which should be translated. */
   field_value?: undefined|''
 };
