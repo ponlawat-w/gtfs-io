@@ -3,6 +3,7 @@ export * from './io/feed/file.js';
 export { GTFSFeedReaderFromFile, GTFSAsyncFeedReaderFromFile } from './io/feed/reader-fs.js';
 export { GTFSFeedReaderFromMemory, GTFSAsyncFeedReaderFromMemory } from './io/feed/reader-memory.js';
 export { GTFSFeedWriter, GTFSAsyncFeedWriter } from './io/feed/writer.js';
+export { GTFSFeedWriterToFile, GTFSAsyncFeedWriterToFile } from './io/feed/writer-fs.js';
 
 export * from './feed/iterable.js';
 export * from './feed/loaded.js';
