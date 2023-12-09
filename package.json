@@ -1,7 +1,7 @@
 {
   "name": "gtfs-io",
   "type": "module",
-  "version": "0.0.10",
+  "version": "0.1.0",
   "description": "IO operations for reading and writing GTFS datasets and GTFS type definitions.",
   "main": "dist/index.js",
   "keywords": [

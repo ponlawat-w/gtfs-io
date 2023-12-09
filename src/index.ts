@@ -1,25 +1,25 @@
-export { GTFSFileIO, GTFSAsyncFileIO } from './io/file';
-export * from './io/feed-file';
-export { GTFSFeedReader, GTFSAsyncFeedReader } from './io/feed-reader';
-export { GTFSFeedWriter, GTFSAsyncFeedWriter } from './io/feed-writer';
+export { GTFSFileIO, GTFSAsyncFileIO } from './io/file.js';
+export * from './io/feed-file.js';
+export { GTFSFeedReader, GTFSAsyncFeedReader } from './io/feed-reader.js';
+export { GTFSFeedWriter, GTFSAsyncFeedWriter } from './io/feed-writer.js';
 
-export * from './feed/iterable';
-export * from './feed/loaded';
-export * from './file-info';
+export * from './feed/iterable.js';
+export * from './feed/loaded.js';
+export * from './file-info.js';
 
-export { GTFSCalendarDateException } from './files/calendar-date';
-export { GTFSCalendarAvailability } from './files/calendar';
-export { GTFSContinuousPickupDropOff, GTFSWheelchairAccessbility } from './files/common';
-export { GTFSFareAttributePaymentMethod, GTFSFareAttributeTransfer } from './files/fare-attribute';
-export { GTFSFareMediaType } from './files/fare-media';
-export { GTFSFareTransferRuleDurationLimit, GTFSFareTransferRuleType } from './files/fare-transfer-rule';
-export { GTFSFrequncyExactTimes } from './files/frequency';
-export { GTFSPathwayMode, GTFSPathwayDirection } from './files/pathway';
-export { GTFSRouteType } from './files/route';
-export { GTFSStopTimePickupDropOff, GTFSStopTimeTimepoint } from './files/stop-time';
-export { GTFSStopLocationType } from './files/stop';
-export { GTFSTranferType } from './files/transfer';
-export { GTFSTripDirection, GTFSTripBikesAllowed } from './files/trip';
+export { GTFSCalendarDateException } from './files/calendar-date.js';
+export { GTFSCalendarAvailability } from './files/calendar.js';
+export { GTFSContinuousPickupDropOff, GTFSWheelchairAccessbility } from './files/common.js';
+export { GTFSFareAttributePaymentMethod, GTFSFareAttributeTransfer } from './files/fare-attribute.js';
+export { GTFSFareMediaType } from './files/fare-media.js';
+export { GTFSFareTransferRuleDurationLimit, GTFSFareTransferRuleType } from './files/fare-transfer-rule.js';
+export { GTFSFrequncyExactTimes } from './files/frequency.js';
+export { GTFSPathwayMode, GTFSPathwayDirection } from './files/pathway.js';
+export { GTFSRouteType } from './files/route.js';
+export { GTFSStopTimePickupDropOff, GTFSStopTimeTimepoint } from './files/stop-time.js';
+export { GTFSStopLocationType } from './files/stop.js';
+export { GTFSTranferType } from './files/transfer.js';
+export { GTFSTripDirection, GTFSTripBikesAllowed } from './files/trip.js';
 
 export type * from './file-info';
 export type * from './types';

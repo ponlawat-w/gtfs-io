@@ -1,4 +1,4 @@
-import { GTFSWheelchairAccessbility } from './common';
+import type { GTFSWheelchairAccessbility } from './common';
 
 /** Indicates the direction of travel for a trip. */
 export enum GTFSTripDirection {

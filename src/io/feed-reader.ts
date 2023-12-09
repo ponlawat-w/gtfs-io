@@ -6,11 +6,11 @@ import {
   readSync as readFileSync
 } from 'fs';
 import { join as joinPath } from 'path';
-import { getAsyncIOFromFileName, getIOFromFileName } from './feed-file';
-import { getGTFSFileInfos } from '../file-info';
-import { GTFSFeedBase } from '../feed/base';
-import { GTFSLoadedFeed } from '../feed/loaded';
-import { GTFSAsyncIterableFeed, GTFSIterableFeed } from '../feed/iterable';
+import { getAsyncIOFromFileName, getIOFromFileName } from './feed-file.js';
+import { getGTFSFileInfos } from '../file-info.js';
+import { GTFSFeedBase } from '../feed/base.js';
+import { GTFSLoadedFeed } from '../feed/loaded.js';
+import { GTFSAsyncIterableFeed, GTFSIterableFeed } from '../feed/iterable.js';
 import type { GTFSFileInfo } from '../file-info';
 import type { GTFSAsyncFileRecords, GTFSFileContent, GTFSFileRecords } from '../types';
 

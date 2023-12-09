@@ -1,9 +1,9 @@
 import AdmZip from 'adm-zip';
 import { appendFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
 import { join as joinPath } from 'path';
-import { getAsyncIOFromFileName, getIOFromFileName } from './feed-file';
-import { GTFSAsyncIterableFeed, GTFSIterableFeed } from '../feed/iterable';
-import { GTFSLoadedFeed } from '../feed/loaded';
+import { getAsyncIOFromFileName, getIOFromFileName } from './feed-file.js';
+import { GTFSAsyncIterableFeed, GTFSIterableFeed } from '../feed/iterable.js';
+import { GTFSLoadedFeed } from '../feed/loaded.js';
 import type { GTFSFileContent } from '../types';
 
 /**

@@ -1,5 +1,5 @@
-import { getInitialReadChunkParams, readChunk } from './reader';
-import { getInitialWriteChunkParams, getRecordsHeader, writeRecords } from './writer';
+import { getInitialReadChunkParams, readChunk } from './reader.js';
+import { getInitialWriteChunkParams, getRecordsHeader, writeRecords } from './writer.js';
 import type { GTFSIOWriteOptions } from './types';
 import type { GTFSFileInfo } from '../file-info';
 import type { GTFSAsyncFileRecords, GTFSFileRecords, GTFSFileRow } from '../types';
