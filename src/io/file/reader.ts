@@ -1,6 +1,6 @@
 import { parse } from 'csv/sync';
-import type { GTFSFileInfo } from '../file-info';
-import type { GTFSFileRow } from '../types';
+import type { GTFSFileInfo } from '../../file-info';
+import type { GTFSFileRow } from '../../types';
 
 /**
  * Parameter for readChunk()

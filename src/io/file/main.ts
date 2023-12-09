@@ -1,8 +1,8 @@
 import { getInitialReadChunkParams, readChunk } from './reader.js';
 import { getInitialWriteChunkParams, getRecordsHeader, writeRecords } from './writer.js';
-import type { GTFSIOWriteOptions } from './types';
-import type { GTFSFileInfo } from '../file-info';
-import type { GTFSAsyncFileRecords, GTFSFileRecords, GTFSFileRow } from '../types';
+import type { GTFSIOWriteOptions } from './types.js';
+import type { GTFSFileInfo } from '../../file-info.js';
+import type { GTFSAsyncFileRecords, GTFSFileRecords, GTFSFileRow } from '../../types.js';
 
 /**
  * Create or modify given options object to define default values if not provided.
