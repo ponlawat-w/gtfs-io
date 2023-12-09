@@ -2,9 +2,11 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { test, expect } from 'vitest';
 import {
+  GTFSAsyncFeedReaderFromFile,
+  GTFSAsyncFeedReaderFromMemory,
   GTFSContinuousPickupDropOff,
-  GTFSFeedReader,
-  GTFSAsyncFeedReader,
+  GTFSFeedReaderFromFile,
+  GTFSFeedReaderFromMemory,
   GTFSRouteType,
   GTFSStopLocationType,
   GTFSStopTimePickupDropOff,
@@ -155,51 +157,51 @@ const getFiles = (): GTFSFileContent[] => [
 ];
 
 test('Test FeedReader: zip path', () => {
-  const reader = GTFSFeedReader.fromZip(ZIP_PATH);
+  const reader = new GTFSFeedReaderFromFile(ZIP_PATH);
   const feed = reader.loadFeed();
   assert(feed);
 });
 
 test('Test AsyncFeedReader: zip path', async() => {
-  const reader = GTFSAsyncFeedReader.fromZip(ZIP_PATH);
+  const reader = new GTFSAsyncFeedReaderFromFile(ZIP_PATH);
   const feed = await reader.loadFeed();
   assert(feed);
 });
 
 test('Test FeedReader: zip content', () => {
   const zip = readFileSync(ZIP_PATH);
-  const reader = GTFSFeedReader.fromZip(zip);
+  const reader = GTFSFeedReaderFromMemory.fromZip(zip);
   const feed = reader.loadFeed();
   assert(feed);
 });
 
 test('Test AsyncFeedReader: zip content', async() => {
   const zip = readFileSync(ZIP_PATH);
-  const reader = GTFSAsyncFeedReader.fromZip(zip);
+  const reader = GTFSAsyncFeedReaderFromMemory.fromZip(zip);
   const feed = await reader.loadFeed();
   assert(feed);
 });
 
 test('Test FeedReader: directory path', () => {
-  const reader = GTFSFeedReader.fromDirectoy(DIR_PATH);
+  const reader = new GTFSFeedReaderFromFile(DIR_PATH);
   const feed = reader.loadFeed();
   assert(feed);
 });
 
 test('Test AsyncFeedReader: directory path', async () => {
-  const reader = GTFSAsyncFeedReader.fromDirectoy(DIR_PATH);
+  const reader = new GTFSAsyncFeedReaderFromFile(DIR_PATH);
   const feed = await reader.loadFeed();
   assert(feed);
 });
 
 test('Test FeedReader: file contents', () => {
-  const reader = GTFSFeedReader.fromFiles(getFiles());
+  const reader = GTFSFeedReaderFromMemory.fromFileContents(getFiles());
   const feed = reader.loadFeed();
   assert(feed);
 });
 
 test('Test AsyncFeedReader: file contents', async() => {
-  const reader = GTFSAsyncFeedReader.fromFiles(getFiles());
+  const reader = GTFSAsyncFeedReaderFromMemory.fromFileContents(getFiles());
   const feed = await reader.loadFeed();
   assert(feed);
 });
