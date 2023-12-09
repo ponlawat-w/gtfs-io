@@ -3,16 +3,18 @@ import AdmZip from 'adm-zip';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'fs';
 import { join as joinPath } from 'path';
 import {
-  GTFSAsyncFeedWriter,
   GTFSContinuousPickupDropOff,
-  GTFSFeedWriter,
   GTFSLoadedFeed,
   GTFSRouteType,
   GTFSStopTimePickupDropOff,
   GTFSStopTimeTimepoint,
   GTFSTripBikesAllowed,
   GTFSTripDirection,
-  GTFSWheelchairAccessbility
+  GTFSWheelchairAccessbility,
+  GTFSFeedWriter,
+  GTFSAsyncFeedWriter,
+  GTFSFeedWriterToFile,
+  GTFSAsyncFeedWriterToFile
 } from '../dist';
 
 const OUTPUT_DIR = './tests/data/ignore';
@@ -89,7 +91,7 @@ test('Test FeedWriter: zip', () => {
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
   }
-  GTFSFeedWriter.writeZip(getTestFeed(), path);
+  GTFSFeedWriterToFile.asZip(getTestFeed(), path);
 
   expect(existsSync(path)).toBeTruthy();
 
@@ -117,7 +119,7 @@ test('Test AsyncFeedWriter: zip', async() => {
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
   }
-  await GTFSAsyncFeedWriter.writeZip(getTestFeed(), path);
+  await GTFSAsyncFeedWriterToFile.asZip(getTestFeed(), path);
 
   expect(existsSync(path)).toBeTruthy();
 
@@ -147,7 +149,7 @@ test('Test FeedWriter: dir', () => {
     }
   }
 
-  GTFSFeedWriter.writeDirectory(getTestFeed(), path);
+  GTFSFeedWriterToFile.asDirectory(getTestFeed(), path);
   const files = [
     'agency.txt', 'calendar_dates.txt', 'calendar.txt', 'routes.txt', 'shapes.txt', 'stop_times.txt', 'stops.txt', 'trips.txt'
   ];
@@ -171,7 +173,7 @@ test('Test AsyncFeedWriter: dir', async() => {
     }
   }
 
-  await GTFSAsyncFeedWriter.writeDirectory(getTestFeed(), path);
+  await GTFSAsyncFeedWriterToFile.asDirectory(getTestFeed(), path);
   const files = [
     'agency.txt', 'calendar_dates.txt', 'calendar.txt', 'routes.txt', 'shapes.txt', 'stop_times.txt', 'stops.txt', 'trips.txt'
   ];

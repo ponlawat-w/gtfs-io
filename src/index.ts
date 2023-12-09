@@ -1,7 +1,9 @@
-export { GTFSFileIO, GTFSAsyncFileIO } from './io/file.js';
-export * from './io/feed-file.js';
-export { GTFSFeedReader, GTFSAsyncFeedReader } from './io/feed-reader.js';
-export { GTFSFeedWriter, GTFSAsyncFeedWriter } from './io/feed-writer.js';
+export { GTFSFileIO, GTFSAsyncFileIO } from './io/file/main.js';
+export * from './io/feed/file.js';
+export { GTFSFeedReaderFromFile, GTFSAsyncFeedReaderFromFile } from './io/feed/reader-fs.js';
+export { GTFSFeedReaderFromMemory, GTFSAsyncFeedReaderFromMemory } from './io/feed/reader-memory.js';
+export { GTFSFeedWriter, GTFSAsyncFeedWriter } from './io/feed/writer.js';
+export { GTFSFeedWriterToFile, GTFSAsyncFeedWriterToFile } from './io/feed/writer-fs.js';
 
 export * from './feed/iterable.js';
 export * from './feed/loaded.js';
@@ -24,7 +26,7 @@ export { GTFSTripDirection, GTFSTripBikesAllowed } from './files/trip.js';
 export type * from './file-info';
 export type * from './types';
 
-export type * from './io/types';
+export type * from './io/file/types';
 
 export type * from './files/agency';
 export type * from './files/area';
