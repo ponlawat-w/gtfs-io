@@ -26,7 +26,7 @@ export { GTFSTripDirection, GTFSTripBikesAllowed } from './files/trip.js';
 export type * from './file-info';
 export type * from './types';
 
-export type * from './io/file/types.js';
+export type * from './io/file/types';
 
 export type * from './files/agency';
 export type * from './files/area';
