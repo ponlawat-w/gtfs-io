@@ -1,5 +1,5 @@
-import { GTFSFeedBase } from './base';
-import { GTFSLoadedFeed } from './loaded';
+import { GTFSFeedBase } from './base.js';
+import { GTFSLoadedFeed } from './loaded.js';
 import type { GTFSTableName } from '../file-info';
 import type { GTFSAsyncFileRecords, GTFSFileRecords, GTFSFileRow } from '../types';
 

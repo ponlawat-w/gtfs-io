@@ -1,5 +1,5 @@
-import { GTFSFeedBase } from './base';
-import { GTFSAsyncIterableFeed, GTFSIterableFeed } from './iterable';
+import { GTFSFeedBase } from './base.js';
+import { GTFSAsyncIterableFeed, GTFSIterableFeed } from './iterable.js';
 import type { GTFSTableName } from '../file-info';
 import type { GTFSFileRow } from '../types';
 

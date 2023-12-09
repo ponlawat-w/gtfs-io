@@ -1,4 +1,4 @@
-import { GTFS_FILES } from '../file-info';
+import { GTFS_FILES } from '../file-info.js';
 import type { GTFSTableName } from '../file-info';
 import type { GTFSAgency } from '../files/agency';
 import type { GTFSArea } from '../files/area';

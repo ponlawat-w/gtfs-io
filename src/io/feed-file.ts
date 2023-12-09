@@ -1,5 +1,5 @@
-import { GTFSAsyncFileIO, GTFSFileIO } from './file';
-import { GTFS_FILES } from '../file-info';
+import { GTFSAsyncFileIO, GTFSFileIO } from './file.js';
+import { GTFS_FILES } from '../file-info.js';
 import type { GTFSFileInfo } from '../file-info';
 import type { GTFSFileRow } from '../types';
 import type { GTFSAgency } from '../files/agency';
