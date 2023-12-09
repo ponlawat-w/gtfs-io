@@ -18,6 +18,9 @@ type GTFSFile = {
   content: Buffer
 };
 
+/**
+ * Feed Reader with input in memory.
+ */
 abstract class GTFSFeedReaderFromMemoryBase<RecordsType extends GTFSFileRecords|GTFSAsyncFileRecords, FeedType extends GTFSFeedBase<RecordsType>|Promise<GTFSFeedBase<RecordsType>>> extends GTFSFeedReaderBase<RecordsType, FeedType> {
   /** Zip object */
   protected zip?: AdmZip = undefined;
@@ -66,23 +69,9 @@ abstract class GTFSFeedReaderFromMemoryBase<RecordsType extends GTFSFileRecords|
    */
   protected abstract getRecordsFromFileContent(info: GTFSFileInfo, content: Buffer): RecordsType;
 
-  /**
-   * Read all records and load into array in memory.
-   */
   public abstract loadFeed(): GTFSLoadedFeed|Promise<GTFSLoadedFeed>;
-
-  /**
-   * Get feed object with row being file name without .txt and value being iterable records.
-   * @returns Feed object with row being file name without .txt and value being iterable records.
-   */
   public abstract getFeed(): FeedType;
 
-  /**
-   * From file information, get records.
-   * Undefined if file does not exist in the feed.
-   * @param info file information
-   * @returns Records
-   */
   public getRecords(info: GTFSFileInfo): RecordsType|undefined {
     if (this.zip) {
       const entry = this.zip.getEntries().filter(entry => entry.entryName === info.fileName);
@@ -97,6 +86,9 @@ abstract class GTFSFeedReaderFromMemoryBase<RecordsType extends GTFSFileRecords|
   }
 };
 
+/**
+ * Synchronous Feed Reader from Data in Memory
+ */
 export class GTFSFeedReaderFromMemory extends GTFSFeedReaderFromMemoryBase<GTFSFileRecords, GTFSIterableFeed> {
   protected getRecordsFromZipEntry(info: GTFSFileInfo, entry: AdmZip.IZipEntry): GTFSFileRecords {
     const io = getIOFromFileName(info.fileName);
@@ -135,6 +127,9 @@ export class GTFSFeedReaderFromMemory extends GTFSFeedReaderFromMemoryBase<GTFSF
   }
 };
 
+/**
+ * Asynchronous Feed Reader from Data in Memory
+ */
 export class GTFSAsyncFeedReaderFromMemory extends GTFSFeedReaderFromMemoryBase<GTFSAsyncFileRecords, GTFSAsyncIterableFeed> {
   protected getRecordsFromZipEntry(info: GTFSFileInfo, entry: AdmZip.IZipEntry): GTFSAsyncFileRecords {
     const io = getAsyncIOFromFileName(info.fileName);

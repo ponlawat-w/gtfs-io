@@ -14,17 +14,17 @@ npm i gtfs-io
 
 ```ts
 // Synchronously
-import { GTFSFeedReader } from 'gtfs-io';
-const reader = GTFSFeedReader.fromZip('gtfs.zip');
-const reader = GTFSFeedReader.fromDirectory('path/to/dir');
+import { GTFSFeedReaderFromFile } from 'gtfs-io';
+const reader = GTFSFeedReaderFromFile.fromZip('gtfs.zip');
+const reader = GTFSFeedReaderFromFile.fromDirectory('path/to/dir');
 const feed = reader.loadFeed();
 console.log(feed.stops[0].stop_id);
 console.log(feed.trips[1].trip_id);
 
 // Asynchronously
-import { GTFSAsyncFeedReader } from 'gtfs-io';
-const reader = GTFSAsyncFeedReader.fromZip('gtfs.zip');
-const reader = GTFSAsyncFeedReader.fromDirectory('path/to/dir');
+import { GTFSAsyncFeedReaderFromFile } from 'gtfs-io';
+const reader = GTFSAsyncFeedReaderFromFile.fromZip('gtfs.zip');
+const reader = GTFSAsyncFeedReaderFromFile.fromDirectory('path/to/dir');
 const feed = await reader.loadFeed();
 console.log(feed.stops[0].stop_id);
 console.log(feed.trips[1].trip_id);
@@ -43,14 +43,14 @@ const feed = new GTFSLoadedFeed({
 });
 
 // Synchronously
-import { GTFSFeedWriter } from 'gtfs-io';
-GTFSFeedWriter.writeZip(feed, 'gtfs.zip');
-GTFSFeedWriter.writeDirectory(feed, 'path/to/dir');
+import { GTFSFeedWriterToFile } from 'gtfs-io';
+GTFSFeedWriterToFile.asZip(feed, 'gtfs.zip');
+GTFSFeedWriterToFile.asDirectory(feed, 'path/to/dir');
 
 // Asynchronously
-import { GTFSAsyncFeedWriter } from 'gtfs-io';
-await GTFSAsyncFeedWriter.writeZip(feed, 'gtfs.zip');
-await GTFSAsyncFeedWriter.writeDirectory(feed, 'path/to/dir');
+import { GTFSAsyncFeedWriterToFile } from 'gtfs-io';
+await GTFSAsyncFeedWriterToFile.asZip(feed, 'gtfs.zip');
+await GTFSAsyncFeedWriterToFiler.asDirectory(feed, 'path/to/dir');
 ```
 
 ---

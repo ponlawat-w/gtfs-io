@@ -26,6 +26,9 @@ type GTFSFile = {
   path: string
 };
 
+/**
+ * Feed reader with file IO operations.
+ */
 abstract class GTFSFeedReaderFromFileBase<RecordsType extends GTFSFileRecords|GTFSAsyncFileRecords, FeedType extends GTFSFeedBase<RecordsType>|Promise<GTFSFeedBase<RecordsType>>> extends GTFSFeedReaderBase<RecordsType, FeedType> {
   /** Zip object */
   protected zip?: AdmZip = undefined;
@@ -64,12 +67,6 @@ abstract class GTFSFeedReaderFromFileBase<RecordsType extends GTFSFileRecords|GT
    */
   protected abstract getRecordsFromFilePath(info: GTFSFileInfo, path: string): RecordsType;
 
-  /**
-   * From file information, get records.
-   * Undefined if file does not exist in the feed.
-   * @param info file information
-   * @returns Records
-   */
   public getRecords(info: GTFSFileInfo): RecordsType|undefined {
     if (this.zip) {
       const entry = this.zip.getEntries().filter(entry => entry.entryName === info.fileName);
@@ -84,6 +81,9 @@ abstract class GTFSFeedReaderFromFileBase<RecordsType extends GTFSFileRecords|GT
   }
 };
 
+/**
+ * Synchronous Feed Reader from Local File
+ */
 export class GTFSFeedReaderFromFile extends GTFSFeedReaderFromFileBase<GTFSFileRecords, GTFSIterableFeed> {
   /**
    * Generator of iterable chunks from a file path.
@@ -130,6 +130,9 @@ export class GTFSFeedReaderFromFile extends GTFSFeedReaderFromFileBase<GTFSFileR
   }
 };
 
+/**
+ * Asynchronous Feed Reader from Local File
+ */
 export class GTFSAsyncFeedReaderFromFile extends GTFSFeedReaderFromFileBase<GTFSAsyncFileRecords, GTFSAsyncIterableFeed> {
   /**
    * Generator of iterable chunks from a file path.
