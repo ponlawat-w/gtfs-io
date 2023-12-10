@@ -3,13 +3,13 @@ import { join as joinPath } from 'path';
 import { getAsyncIOFromFileName, getIOFromFileName } from './file.js';
 import { GTFSAsyncIterableFeed, GTFSIterableFeed } from '../../feed/iterable.js';
 import { GTFSLoadedFeed } from '../../feed/loaded.js';
-import { GTFSAsyncFeedWriter, GTFSFeedWriter } from './writer.js';
+import { GTFSAsyncFeedWriter as GTFSAsyncFeedWriterToMemory, GTFSFeedWriter as GTFSFeedWriterToMemory } from './writer-memory.js';
 
 /**
  * GTFS feed writer.
  * For static usage only.
  */
-export class GTFSFeedWriterToFile {
+export class GTFSFeedWriter {
   private constructor() {}
 
   /**
@@ -17,8 +17,8 @@ export class GTFSFeedWriterToFile {
    * @param feed GTFS Feed
    * @param path Path to output zip file
    */
-  public static asZip(feed: GTFSIterableFeed|GTFSLoadedFeed, path: string): void {
-    GTFSFeedWriter.createZip(feed).writeZip(path);
+  public static toZip(feed: GTFSIterableFeed|GTFSLoadedFeed, path: string): void {
+    GTFSFeedWriterToMemory.createZip(feed).writeZip(path);
   }
 
   /**
@@ -28,7 +28,7 @@ export class GTFSFeedWriterToFile {
    * @param mkdirIfNotExists True to recursively create a directory at the path if does not exist
    * @returns File names without directory path, with .txt extension.
    */
-  public static asDirectory(feed: GTFSIterableFeed|GTFSLoadedFeed, path: string, mkdirIfNotExists: boolean = true): string[] {
+  public static toDirectory(feed: GTFSIterableFeed|GTFSLoadedFeed, path: string, mkdirIfNotExists: boolean = true): string[] {
     if (feed instanceof GTFSLoadedFeed) feed = feed.getIterable();
 
     if (!existsSync(path) && mkdirIfNotExists) {
@@ -53,7 +53,7 @@ export class GTFSFeedWriterToFile {
  * GTFS feed writer.
  * For static usage only.
  */
-export class GTFSAsyncFeedWriterToFile {
+export class GTFSAsyncFeedWriter {
   private constructor() {}
 
   /**
@@ -61,8 +61,8 @@ export class GTFSAsyncFeedWriterToFile {
    * @param feed GTFS Feed
    * @param path Path to output zip file
    */
-  public static async asZip(feed: GTFSAsyncIterableFeed|GTFSIterableFeed|GTFSLoadedFeed, path: string): Promise<void> {
-    (await GTFSAsyncFeedWriter.createZip(feed)).writeZip(path);
+  public static async toZip(feed: GTFSAsyncIterableFeed|GTFSIterableFeed|GTFSLoadedFeed, path: string): Promise<void> {
+    (await GTFSAsyncFeedWriterToMemory.createZip(feed)).writeZip(path);
   }
 
   /**
@@ -72,7 +72,7 @@ export class GTFSAsyncFeedWriterToFile {
    * @param mkdirIfNotExists True to recursively create a directory at the path if does not exist
    * @returns File names without directory path, with .txt extension.
    */
-  public static async asDirectory(feed: GTFSAsyncIterableFeed|GTFSIterableFeed|GTFSLoadedFeed, path: string, mkdirIfNotExists: boolean = true): Promise<string[]> {
+  public static async toDirectory(feed: GTFSAsyncIterableFeed|GTFSIterableFeed|GTFSLoadedFeed, path: string, mkdirIfNotExists: boolean = true): Promise<string[]> {
     if (feed instanceof GTFSLoadedFeed) feed = feed.getAsyncIterable();
     else if (feed instanceof GTFSIterableFeed) feed = feed.toAsync();
 

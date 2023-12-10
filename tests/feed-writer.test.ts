@@ -11,8 +11,8 @@ import {
   GTFSTripBikesAllowed,
   GTFSTripDirection,
   GTFSWheelchairAccessbility,
-  GTFSFeedWriter,
-  GTFSAsyncFeedWriter,
+  GTFSFeedWriterToMemory,
+  GTFSAsyncFeedWriterToMemory,
   GTFSFeedWriterToFile,
   GTFSAsyncFeedWriterToFile
 } from '../dist';
@@ -91,7 +91,7 @@ test('Test FeedWriter: zip', () => {
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
   }
-  GTFSFeedWriterToFile.asZip(getTestFeed(), path);
+  GTFSFeedWriterToFile.toZip(getTestFeed(), path);
 
   expect(existsSync(path)).toBeTruthy();
 
@@ -119,7 +119,7 @@ test('Test AsyncFeedWriter: zip', async() => {
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
   }
-  await GTFSAsyncFeedWriterToFile.asZip(getTestFeed(), path);
+  await GTFSAsyncFeedWriterToFile.toZip(getTestFeed(), path);
 
   expect(existsSync(path)).toBeTruthy();
 
@@ -149,7 +149,7 @@ test('Test FeedWriter: dir', () => {
     }
   }
 
-  GTFSFeedWriterToFile.asDirectory(getTestFeed(), path);
+  GTFSFeedWriterToFile.toDirectory(getTestFeed(), path);
   const files = [
     'agency.txt', 'calendar_dates.txt', 'calendar.txt', 'routes.txt', 'shapes.txt', 'stop_times.txt', 'stops.txt', 'trips.txt'
   ];
@@ -173,7 +173,7 @@ test('Test AsyncFeedWriter: dir', async() => {
     }
   }
 
-  await GTFSAsyncFeedWriterToFile.asDirectory(getTestFeed(), path);
+  await GTFSAsyncFeedWriterToFile.toDirectory(getTestFeed(), path);
   const files = [
     'agency.txt', 'calendar_dates.txt', 'calendar.txt', 'routes.txt', 'shapes.txt', 'stop_times.txt', 'stops.txt', 'trips.txt'
   ];
@@ -190,7 +190,7 @@ test('Test AsyncFeedWriter: dir', async() => {
 });
 
 test('Test FeedWriter: contents', () => {
-  const contents = GTFSFeedWriter.createFileContents(getTestFeed());
+  const contents = GTFSFeedWriterToMemory.createFileContents(getTestFeed());
   expect(contents.length).toEqual(8);
 
   const files = [
@@ -205,7 +205,7 @@ test('Test FeedWriter: contents', () => {
 });
 
 test('Test AsyncFeedWriter: contents', async() => {
-  const contents = await GTFSAsyncFeedWriter.createFileContents(getTestFeed());
+  const contents = await GTFSAsyncFeedWriterToMemory.createFileContents(getTestFeed());
   expect(contents.length).toEqual(8);
 
   const files = [

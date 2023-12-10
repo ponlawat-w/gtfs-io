@@ -89,7 +89,7 @@ abstract class GTFSFeedReaderFromMemoryBase<RecordsType extends GTFSFileRecords|
 /**
  * Synchronous Feed Reader from Data in Memory
  */
-export class GTFSFeedReaderFromMemory extends GTFSFeedReaderFromMemoryBase<GTFSFileRecords, GTFSIterableFeed> {
+export class GTFSFeedReader extends GTFSFeedReaderFromMemoryBase<GTFSFileRecords, GTFSIterableFeed> {
   protected getRecordsFromZipEntry(info: GTFSFileInfo, entry: AdmZip.IZipEntry): GTFSFileRecords {
     const io = getIOFromFileName(info.fileName);
     return io.readContent(entry.getData().toString()).values();
@@ -113,8 +113,8 @@ export class GTFSFeedReaderFromMemory extends GTFSFeedReaderFromMemoryBase<GTFSF
    * @param zip Zip file path or content buffer
    * @returns GTFSFeedWriter instance
    */
-  public static fromZip(zip: string|Buffer|ArrayBuffer): GTFSFeedReaderFromMemory {
-    return new GTFSFeedReaderFromMemory(zip);
+  public static fromZip(zip: string|Buffer|ArrayBuffer): GTFSFeedReader {
+    return new GTFSFeedReader(zip);
   }
 
   /**
@@ -122,15 +122,15 @@ export class GTFSFeedReaderFromMemory extends GTFSFeedReaderFromMemoryBase<GTFSF
    * @param files Feed files object
    * @returns GTFSFeedWriter instance
    */
-  public static fromFileContents(files: GTFSFileContent[]): GTFSFeedReaderFromMemory {
-    return new GTFSFeedReaderFromMemory(undefined, files);
+  public static fromFileContents(files: GTFSFileContent[]): GTFSFeedReader {
+    return new GTFSFeedReader(undefined, files);
   }
 };
 
 /**
  * Asynchronous Feed Reader from Data in Memory
  */
-export class GTFSAsyncFeedReaderFromMemory extends GTFSFeedReaderFromMemoryBase<GTFSAsyncFileRecords, GTFSAsyncIterableFeed> {
+export class GTFSAsyncFeedReader extends GTFSFeedReaderFromMemoryBase<GTFSAsyncFileRecords, GTFSAsyncIterableFeed> {
   protected getRecordsFromZipEntry(info: GTFSFileInfo, entry: AdmZip.IZipEntry): GTFSAsyncFileRecords {
     const io = getAsyncIOFromFileName(info.fileName);
     const generator = async function*() { yield entry.getData().toString(); };
@@ -156,8 +156,8 @@ export class GTFSAsyncFeedReaderFromMemory extends GTFSFeedReaderFromMemoryBase<
    * @param zip Zip file path or content buffer
    * @returns GTFSFeedWriter instance
    */
-  public static fromZip(zip: string|Buffer|ArrayBuffer): GTFSAsyncFeedReaderFromMemory {
-    return new GTFSAsyncFeedReaderFromMemory(zip);
+  public static fromZip(zip: string|Buffer|ArrayBuffer): GTFSAsyncFeedReader {
+    return new GTFSAsyncFeedReader(zip);
   }
 
   /**
@@ -165,7 +165,7 @@ export class GTFSAsyncFeedReaderFromMemory extends GTFSFeedReaderFromMemoryBase<
    * @param files Feed files object
    * @returns GTFSFeedWriter instance
    */
-  public static fromFileContents(files: GTFSFileContent[]): GTFSAsyncFeedReaderFromMemory {
-    return new GTFSAsyncFeedReaderFromMemory(undefined, files);
+  public static fromFileContents(files: GTFSFileContent[]): GTFSAsyncFeedReader {
+    return new GTFSAsyncFeedReader(undefined, files);
   }
 }

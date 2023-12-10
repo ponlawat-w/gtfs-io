@@ -84,7 +84,7 @@ abstract class GTFSFeedReaderFromFileBase<RecordsType extends GTFSFileRecords|GT
 /**
  * Synchronous Feed Reader from Local File
  */
-export class GTFSFeedReaderFromFile extends GTFSFeedReaderFromFileBase<GTFSFileRecords, GTFSIterableFeed> {
+export class GTFSFeedReader extends GTFSFeedReaderFromFileBase<GTFSFileRecords, GTFSIterableFeed> {
   /**
    * Generator of iterable chunks from a file path.
    * @param filePath File path
@@ -115,7 +115,7 @@ export class GTFSFeedReaderFromFile extends GTFSFeedReaderFromFileBase<GTFSFileR
   
   protected *getRecordsFromFilePath(info: GTFSFileInfo, path: string): GTFSFileRecords {
     const io = getIOFromFileName(info.fileName);
-    const chunks = GTFSFeedReaderFromFile.readFileChunks(path);
+    const chunks = GTFSFeedReader.readFileChunks(path);
     for (const record of io.read(chunks)) {
       yield record;
     }
@@ -133,7 +133,7 @@ export class GTFSFeedReaderFromFile extends GTFSFeedReaderFromFileBase<GTFSFileR
 /**
  * Asynchronous Feed Reader from Local File
  */
-export class GTFSAsyncFeedReaderFromFile extends GTFSFeedReaderFromFileBase<GTFSAsyncFileRecords, GTFSAsyncIterableFeed> {
+export class GTFSAsyncFeedReader extends GTFSFeedReaderFromFileBase<GTFSAsyncFileRecords, GTFSAsyncIterableFeed> {
   /**
    * Generator of iterable chunks from a file path.
    * @param filePath File path
@@ -173,7 +173,7 @@ export class GTFSAsyncFeedReaderFromFile extends GTFSFeedReaderFromFileBase<GTFS
   
   protected getRecordsFromFilePath(info: GTFSFileInfo, path: string): GTFSAsyncFileRecords {
     const io = getAsyncIOFromFileName(info.fileName);
-    return io.read(GTFSAsyncFeedReaderFromFile.readFileChunks(path));
+    return io.read(GTFSAsyncFeedReader.readFileChunks(path));
   }
 
   public getFeed(): GTFSAsyncIterableFeed {
