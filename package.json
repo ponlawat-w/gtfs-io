@@ -1,7 +1,7 @@
 {
   "name": "gtfs-io",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "IO operations for reading and writing GTFS datasets and GTFS type definitions.",
   "main": "dist/index.js",
   "keywords": [
@@ -28,6 +28,16 @@
   "files": [
     "dist/*"
   ],
+  "exports": {
+    ".": { "default": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./feed": { "default": "./dist/feed.js", "types": "./dist/feed.d.ts" },
+    "./file-info": { "default": "./dist/file-info.js", "types": "./dist/file-info.d.ts" },
+    "./files": { "default": "./dist/files.js", "types": "./dist/files.d.ts" },
+    "./io": { "default": "./dist/io.js", "types": "./dist/io.d.ts" },
+    "./io/fs": { "default": "./dist/io-fs.js", "types": "./dist/io-fs.d.ts" },
+    "./io/memory": { "default": "./dist/io-memory.js", "types": "./dist/io-memory.d.ts" },
+    "./types": { "types": "./dist/types.d.ts" }
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ponlawat-w/gtfs-io/issues"

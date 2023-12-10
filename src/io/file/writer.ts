@@ -1,7 +1,7 @@
 import { stringify } from 'csv/sync';
-import type { GTFSIOWriteOptions } from './types';
-import type { GTFSFileInfo } from '../../file-info';
-import type { GTFSFileRow } from '../../types';
+import type { GTFSIOWriteOptions } from './types.d.ts';
+import type { GTFSFileInfo } from '../../file-info.d.ts';
+import type { GTFSFileRow } from '../../types.d.ts';
 
 /**
  * Parameter for writeRecords()

@@ -2,10 +2,10 @@ import AdmZip from 'adm-zip';
 import { getAsyncIOFromFileName, getIOFromFileName } from './file.js';
 import { GTFSAsyncIterableFeed, GTFSIterableFeed } from '../../feed/iterable.js';
 import { getGTFSFileInfos } from '../../file-info.js';
-import type { GTFSFeedBase } from '../../feed/base';
-import type { GTFSLoadedFeed } from '../../feed/loaded';
-import type { GTFSFileInfo } from '../../file-info';
-import type { GTFSAsyncFileRecords, GTFSFileRecords } from '../../types';
+import type { GTFSFeedBase } from '../../feed/base.d.ts';
+import type { GTFSLoadedFeed } from '../../feed/loaded.d.ts';
+import type { GTFSFileInfo } from '../../file-info.d.ts';
+import type { GTFSAsyncFileRecords, GTFSFileRecords } from '../../types.d.ts';
 
 /**
  * Feed Reader Base

@@ -1,4 +1,4 @@
-import type { GTFSWheelchairAccessbility } from './common';
+import type { GTFSWheelchairAccessbility } from './common.d.ts';
 
 /** Location Type */
 export enum GTFSStopLocationType {

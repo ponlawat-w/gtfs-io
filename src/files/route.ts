@@ -1,4 +1,4 @@
-import type { GTFSContinuousPickupDropOff } from './common';
+import type { GTFSContinuousPickupDropOff } from './common.d.ts';
 
 /** Indicates the type of transportation used on a route. */
 export enum GTFSRouteType {
