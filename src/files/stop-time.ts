@@ -1,4 +1,4 @@
-import { GTFSContinuousPickupDropOff } from './common';
+import type { GTFSContinuousPickupDropOff } from './common.d.ts';
 
 /** Indicates pickup / drop off method. */
 export enum GTFSStopTimePickupDropOff {

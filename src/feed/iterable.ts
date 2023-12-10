@@ -1,7 +1,7 @@
 import { GTFSFeedBase } from './base.js';
 import { GTFSLoadedFeed } from './loaded.js';
-import type { GTFSTableName } from '../file-info';
-import type { GTFSAsyncFileRecords, GTFSFileRecords, GTFSFileRow } from '../types';
+import type { GTFSTableName } from '../file-info.d.ts';
+import type { GTFSAsyncFileRecords, GTFSFileRecords, GTFSFileRow } from '../types.d.ts';
 
 /**
  * GTFS Feed whoose records are iterable iterator.

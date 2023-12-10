@@ -1,4 +1,4 @@
-import type { GTFSTableName } from '../file-info';
+import type { GTFSTableName } from '../file-info.d.ts';
 
 type TranslationByRecordID = {
   /** Defines the record that corresponds to the field to be translated. */

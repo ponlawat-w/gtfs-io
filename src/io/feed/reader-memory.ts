@@ -3,10 +3,10 @@ import { getAsyncIOFromFileName, getIOFromFileName } from './file.js';
 import { GTFSFeedReaderBase } from './reader-base.js';
 import { GTFSFeedBase } from '../../feed/base.js';
 import { getGTFSFileInfos } from '../../file-info.js';
-import type { GTFSAsyncIterableFeed, GTFSIterableFeed } from '../../feed/iterable';
-import type { GTFSLoadedFeed } from '../../feed/loaded';
-import type { GTFSFileInfo } from '../../file-info';
-import type { GTFSAsyncFileRecords, GTFSFileContent, GTFSFileRecords } from '../../types';
+import type { GTFSAsyncIterableFeed, GTFSIterableFeed } from '../../feed/iterable.d.ts';
+import type { GTFSLoadedFeed } from '../../feed/loaded.d.ts';
+import type { GTFSFileInfo } from '../../file-info.d.ts';
+import type { GTFSAsyncFileRecords, GTFSFileContent, GTFSFileRecords } from '../../types.d.ts';
 
 /**
  * GTFS file object to read
